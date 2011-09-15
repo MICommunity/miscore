@@ -1,37 +1,33 @@
 package uk.ac.ebi.enfin.mi.score;
-
 import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 /**
- * This abstract class is used for scores relaying on ontology terms
+ * Class for calculating scores relaying
+ * on categories defined by ontology terms
  *
  * User: rafael
  * Date: 04-May-2010
  * Time: 09:40:00
  */
-
 public abstract class CategoryScore extends ConfidenceScore{
-    private static final Logger logger = Logger.getLogger(CategoryScore.class);
+    protected static final Logger logger = Logger.getLogger(CategoryScore.class);
     protected List<String> ontologyTermsQuery;
-    protected Map<String,Float> ontologyScore = new HashMap<String,Float>();
-    protected Map<String,Integer> mainCategories = new HashMap<String,Integer>();
-    protected Map<String,String> mappingParentTerms = new HashMap<String,String>();
-
+    protected Map<String,Float> ontologyScore = new HashMap<String,Float>(); // "parent ontology Id":"score"
+    protected Map<String,Integer> mainCategories = new HashMap<String,Integer>(); // "parent ontology Id":"category Id"
+    protected Map<String,String> mappingParentTerms = new HashMap<String,String>(); // "child ontology Id":"parent ontology Id"
+    private static final String categoryScorePropertiesFile = "scoreCategories.properties";
+    protected Properties categoryScores;
 
 
     /**
-     * This class requires a list of ontology terms as input
-     * @param listOfOntologyTerms
+     * @param listOfOntologyTerms List of ontology terms used
+     * to describe one property of one interaction
      */
     public CategoryScore(ArrayList<String> listOfOntologyTerms) {
         ontologyTermsQuery = listOfOntologyTerms;
-//        setDefaultOntologyScore();
-//        setDefaultMainCategories();
+        categoryScores = getCategoryScores(categoryScorePropertiesFile);
     }
 
     /**
@@ -77,7 +73,6 @@ public abstract class CategoryScore extends ConfidenceScore{
                 categoryCount.put(category, repetitions+1);
             }
         }
-
         /* Count repetition for parent terms */
         //HashMap<String,Integer> parentTermCount = new HashMap<String, Integer>();
         for(String oTerm:ontologyTermsQuery){
@@ -115,12 +110,45 @@ public abstract class CategoryScore extends ConfidenceScore{
         b = b+1.0f;
         a = a+1.0f;
         score = logOfBase(b,a);
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=logOfBase(a,b) ... score=" + score + ", a=" + a + ", b=" + b + " | List of terms: " + ontologyTermsQuery);
+        logger.debug( "Category score=" + score + ", a=" + a + ", b=" + b + " | List of terms: " + ontologyTermsQuery );
         return score;
     }
 
+    /**
+     * Get category score properties from the scoreCategories.properties
+     * file.
+     * @return
+     */
+    private Properties getCategoryScores(String categoryScorePropertiesFile){
+        Properties properties = new Properties();
+        try {
+
+            properties.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
+        } catch (IOException e) {
+            logger.error("Error getting Properties file", e);
+        }
+        return properties;
+    }
+
+    /**
+     * Set a mapping between ontology children terms and root parents.
+     * It will fill up the class attribute "mappingParentTermskey"
+     * map "child ontology Id":"parent ontology Id".
+     *
+     * @param mapOfTerms A map "queried ontology term id":"children terms". Children
+     * terms are represented in nested map "ontology term id":"ontology term name".
+     */
+    protected void setMappingParentTerms(Map<String, Map<String, String>> mapOfTerms){
+        for(String parentTermId:mapOfTerms.keySet()){
+            Map<String,String> children = mapOfTerms.get(parentTermId);
+            /* Add children */
+            for(String childTermId:children.keySet()){
+                mappingParentTerms.put(childTermId, parentTermId);
+            }
+            /* Add parents */
+            mappingParentTerms.put(parentTermId,parentTermId);
+        }
+    }
 
     /**
      * Take default ontology score mapping

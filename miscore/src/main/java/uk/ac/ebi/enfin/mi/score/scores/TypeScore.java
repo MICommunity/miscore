@@ -1,41 +1,51 @@
 package uk.ac.ebi.enfin.mi.score.scores;
 import uk.ac.ebi.enfin.mi.score.CategoryScore;
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
-
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 
+
 /**
- * Created by IntelliJ IDEA.
+ * Calculate type score
+ *
  * User: rafael
  * Date: 21-Apr-2010
  * Time: 14:45:48
- * To change this template use File | Settings | File Templates.
  */
 public class TypeScore extends CategoryScore {
      /**
-     * This class requires a list of query ontology terms as input
-     *
-     * @param listOfOntologyTerms
+      * Process type score using a list of interaction types
+      * @param listOfOntologyTerms List of ontology term IDs defining
+      * interaction types for one interaction
      */
     public TypeScore(ArrayList<String> listOfOntologyTerms) {
         super(listOfOntologyTerms);
         setOntologyTypeScores();
         setOntologyTypeCategories();
 
-        /* RETRIEVE ONTOLGY TERMS FOR PARENT */
+        /* RETRIEVE ONTOLOGY TERMS FOR PARENT */
         ArrayList<String> parentTerms = new ArrayList<String>();
-        parentTerms.add("MI:0208");
-        parentTerms.add("MI:0403");
-        parentTerms.add("MI:0407");
+        parentTerms.add(categoryScores.getProperty("type.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("type.cv5.id"));
         Map<String, Map<String, String>> mapOfTypeTerms;
         MIOntology MIO = new MIOntology();
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
         setMappingParentTerms(mapOfTypeTerms);
+        /* No need to look for MI:0914 and "MI:0915 in OLS since they are
+        parent terms of MI:0407. No need to look for MI:0403 since it has
+        no children. Just include them in the mapping */
+        mappingParentTerms.put(categoryScores.getProperty("type.cv3.id"),categoryScores.getProperty("type.cv3.id"));
+        mappingParentTerms.put(categoryScores.getProperty("type.cv4.id"),categoryScores.getProperty("type.cv4.id"));
+        mappingParentTerms.put(categoryScores.getProperty("type.cv3.id"),categoryScores.getProperty("type.cv2.id"));
     }
 
-
+    /**
+     * Process type score using a list of interaction types.
+     * @param listOfOntologyTerms  List of ontology terms defining interaction types for one interaction
+     * @param mapOfTypeTerms  Mapping between ontology children terms and root parents. A map "queried ontology term id":"children terms". Children
+     * terms are represented in nested map "ontology term id":"ontology term name"
+     */
     public TypeScore(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfTypeTerms) {
         super(listOfOntologyTerms);
         setOntologyTypeScores();
@@ -43,46 +53,38 @@ public class TypeScore extends CategoryScore {
         setMappingParentTerms(mapOfTypeTerms);
     }
 
+    /**
+     * Set default scores for selected ontology term from the MI ontology
+     */
     private void setOntologyTypeScores(){
-        /* SET ONTOLOGY SCORE */
         Map<String, Float> defaultOntologyScore = new HashMap<String, Float>();
-        defaultOntologyScore.put("MI:0208", 0.10f); // cv1 // genetic interaction
-        defaultOntologyScore.put("MI:0403", 0.33f); // cv2 // colocalization
-        defaultOntologyScore.put("MI:0914", 0.33f); // cv3 // association
-        defaultOntologyScore.put("MI:0915", 0.66f); // cv4 // physical association
-        defaultOntologyScore.put("MI:0407", 1.00f); // cv5 // direct interaction
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv1.id"), new Float(categoryScores.getProperty("type.cv1.score"))); // cv1 // genetic interaction
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv2.id"), new Float(categoryScores.getProperty("type.cv2.score"))); // cv2 // colocalization
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv3.id"), new Float(categoryScores.getProperty("type.cv3.score"))); // cv3 // association
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv4.id"), new Float(categoryScores.getProperty("type.cv4.score"))); // cv4 // physical association
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv5.id"), new Float(categoryScores.getProperty("type.cv5.score"))); // cv5 // direct interaction
         /* Ontology terms not present in OLS will be consider null and classify as "unknown" terms */
-        defaultOntologyScore.put("unknown", 0.05f); // cv6 // unknown
+        defaultOntologyScore.put(categoryScores.getProperty("type.cv6.id"), new Float(categoryScores.getProperty("type.cv6.score"))); // cv6 // unknown
         setOntologyScore(defaultOntologyScore);
     }
 
+    /**
+     * Set default categories for selected ontology term from the MI ontology
+     */
     private void setOntologyTypeCategories(){
-         /* SET ONTOLOGY CATEGORIES */
         Map<String,Integer> defaultMainCategories = new HashMap<String, Integer>();
-        defaultMainCategories.put("MI:0208", 1); // cv1 // genetic interaction
-        defaultMainCategories.put("MI:0403", 2); // cv2 // colocalization
-        defaultMainCategories.put("MI:0914", 3); // cv3 // association
-        defaultMainCategories.put("MI:0915", 3); // cv4 // physical association
-        defaultMainCategories.put("MI:0407", 3); // cv5 // direct interaction
-        defaultMainCategories.put("unknown", 1); // cv6 // unknown
+        defaultMainCategories.put(categoryScores.getProperty("type.cv1.id"), Integer.parseInt(categoryScores.getProperty("type.cv1.category"))); // cv1 // genetic interaction
+        defaultMainCategories.put(categoryScores.getProperty("type.cv2.id"), Integer.parseInt(categoryScores.getProperty("type.cv2.category"))); // cv2 // colocalization
+        defaultMainCategories.put(categoryScores.getProperty("type.cv3.id"), Integer.parseInt(categoryScores.getProperty("type.cv3.category"))); // cv3 // association
+        defaultMainCategories.put(categoryScores.getProperty("type.cv4.id"), Integer.parseInt(categoryScores.getProperty("type.cv4.category"))); // cv4 // physical association
+        defaultMainCategories.put(categoryScores.getProperty("type.cv5.id"), Integer.parseInt(categoryScores.getProperty("type.cv5.category"))); // cv5 // direct interaction
+        /* Ontology terms not present in OLS will be consider null and classify as "unknown" terms */
+        defaultMainCategories.put(categoryScores.getProperty("type.cv6.id"), Integer.parseInt(categoryScores.getProperty("type.cv6.category"))); // cv6 // unknown
         setMainCategories(defaultMainCategories);
     }
 
 
-    private void setMappingParentTerms(Map<String, Map<String, String>> mapOfTypeTerms){
-        /* Update mapping automatically */
-        for(String term:mapOfTypeTerms.keySet()){
-            Map<String,String> children = mapOfTypeTerms.get(term);
-            for(String child:children.keySet()){
-                mappingParentTerms.put(child, term);
-            }
-            /* Add parents */
-            mappingParentTerms.put(term,term);
-        }
-        /* Update mapping manually */
-        mappingParentTerms.put("MI:0914","MI:0914");
-        mappingParentTerms.put("MI:0915","MI:0915");
-    }
+
 
 
 }

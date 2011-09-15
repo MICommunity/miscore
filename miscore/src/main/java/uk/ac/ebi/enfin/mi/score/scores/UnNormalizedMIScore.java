@@ -38,11 +38,7 @@ public class UnNormalizedMIScore extends MIScore {
         if(getPublicationScore() != null) {
             score += (getPublicationScore()*getPublicationWeight());
         }
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=" + score );
-
+        logger.debug("MIscore UnNormalized = " + score );
         return score;
     }
 

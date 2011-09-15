@@ -3,6 +3,7 @@ package uk.ac.ebi.enfin.mi.score.scores;
 import uk.ac.ebi.enfin.mi.score.ConfidenceScore;
 import org.apache.log4j.Logger;
 
+
 /**
  * Publication score
  *
@@ -34,11 +35,7 @@ public class PublicationScore extends ConfidenceScore{
             a = numberOfPublications+1.0f;
             score = logOfBase(b, a);
         }
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=logOfBase(a,b) ... score=" + score + ", a=" + a + ", b=" + b + " | Number of publications: " + numberOfPublications);
-
+        logger.debug("Publication score=" + score + ", a=" + a + ", b=" + b + " | Number of publications: " + numberOfPublications);
         return score;
     }
 

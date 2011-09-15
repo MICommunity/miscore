@@ -48,11 +48,7 @@ public class MIScore extends ConfidenceScore{
         }
 
         score = a/b;
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=logOfBase(a,b) ... score=" + score + ", a=" + a + ", b=" + b);
-
+        logger.debug("MIscore=" + score + ", a=" + a + ", b=" + b);
         return score;
     }
 
@@ -248,7 +244,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weith between 0 and 1 asigned for type score
+     * Return the weigh between 0 and 1 asigned for type score
      * @return
      */
     public Float getTypeWeight() {
@@ -256,7 +252,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Define how much weith the type score has in the equation using an score between 0 and 1
+     * Define how much weigh the type score has in the equation using an score between 0 and 1
      * @param typeWeight
      */
     public void setTypeWeight(Float typeWeight) {
@@ -264,7 +260,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weith between 0 and 1 asigned for method score
+     * Return the weigh between 0 and 1 asigned for method score
      * @return
      */
     public Float getMethodWeight() {
@@ -272,7 +268,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Define how much weith the method score has in the equation using an score between 0 and 1
+     * Define how much weigh the method score has in the equation using an score between 0 and 1
      * @param methodWeight
      */
     public void setMethodWeight(Float methodWeight) {
@@ -280,7 +276,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weith between 0 and 1 asigned for publication score
+     * Return the weigh between 0 and 1 asigned for publication score
      * @return
      */
     public Float getPublicationWeight() {
@@ -288,7 +284,7 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Define how much weith the publication score has in the equation using an score between 0 and 1
+     * Define how much weigh the publication score has in the equation using an score between 0 and 1
      * @param publicationWeight
      */
     public void setPublicationWeight(Float publicationWeight) {

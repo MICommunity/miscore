@@ -10,14 +10,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.rmi.RemoteException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 /**
  * Class using the OLS service to retrieve ontology terms for the MI ontology
- *
  * User: rafael
  * Date: 17-May-2010
  * Time: 15:11:50
@@ -26,30 +24,12 @@ public class MIOntology {
     static Logger logger = Logger.getLogger(MIOntology.class);
     private Map<String,String> mapIdName;
 
-// Deprecated. We are using the OLS REST service instead.
-//    /**
-//     * Gets all the children ontology terms for one term quering the MI ontology
-//     * @param parentTerm
-//     * @return
-//     */
-//    public Map<String,String> getChildren(String parentTerm){
-//        HashMap results = null;
-//        // Initialising OLS query service
-//        QueryService olsQueryService = new QueryServiceLocator();
-//        try {
-//            Query olsQuery = olsQueryService.getOntologyQuery();
-//            results = olsQuery.getTermChildren(parentTerm,"MI",-1,null);
-//            logger.info("Query " + parentTerm + " in OLS");
-//        } catch (ServiceException e) {
-//            logger.error(e);
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        } catch (RemoteException e) {
-//            logger.error(e);
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
-//        return results;
-//    }
-
+    /**
+     * Get all the children terms in the MI ontology for one specific MI ontology
+     * term id. Return a map "ontology term id":"ontology term name".
+     * @param parentTerm
+     * @return
+     */
     public Map<String,String> getJsonChildren(String parentTerm){
         mapIdName = new HashMap<String,String>();
         String jsonQuery = "http://www.ebi.ac.uk/ontology-lookup/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
@@ -73,17 +53,23 @@ public class MIOntology {
                     //mapIdName.put(termId,termName); // Include the parentTerm
                     getMapIdNameFromJsonArray(termChildren);
                 } catch (JSONException e){
-                    logger.warn("No children for " + termId);
+                    //todo: is there a way to distinguish between wrong Ontology ID and no children?
+                    logger.warn(termId + ", wrong Ontology term ID or no children for this parent term");
                 }
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            logger.error(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            logger.error(e.getMessage());
         }
         return mapIdName;
     }
 
+    /**
+     * Recursive method to get children terms from children terms in a
+     * flat key value map with term ids and term names.
+     * @param termChildren
+     */
     private void getMapIdNameFromJsonArray(JSONArray termChildren){
         for (int i = 0; i < termChildren.size(); ++i) {
             JSONObject child = termChildren.getJSONObject(i);
@@ -97,11 +83,17 @@ public class MIOntology {
                 }
             } catch (JSONException e){
                 logger.debug("No children for " + termId);
-                logger.debug(e.getMessage());
             }
         }
     }
 
+    /**
+     * Get all the children terms in the MI ontology for more than one MI ontology
+     * term id. Return a map "queried ontology term id":"children terms". The children
+     * terms are represented in a map "ontology term id":"ontology term name".
+     * @param termsToQuery Parent ontology terms
+     * @return
+     */
     public Map<String,Map<String,String>> getMapOfTerms(ArrayList<String> termsToQuery){
         Map<String,Map<String,String>> mapOfTerms = new HashMap<String,Map<String,String>>();
         for(String term:termsToQuery){

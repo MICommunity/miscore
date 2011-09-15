@@ -3,10 +3,8 @@ package uk.ac.ebi.enfin.mi.score.scores;
 import org.apache.log4j.Logger;
 import uk.ac.ebi.enfin.mi.score.ConfidenceScore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Category score without normalization
@@ -21,8 +19,9 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
     protected List<String> ontologyTermsQuery;
     protected Map<String,Float> ontologyScore = new HashMap<String,Float>();
     protected Map<String,String> mappingParentTerms = new HashMap<String,String>();
-
     private static final Logger logger = Logger.getLogger(UnNormalizedCategoryScore.class);
+    private static final String categoryScorePropertiesFile = "scoreCategories.properties";
+    protected Properties categoryScores;
 
     /**
      * This class requires a list of ontology terms as input
@@ -31,6 +30,7 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
      */
     public UnNormalizedCategoryScore(ArrayList<String> listOfOntologyTerms) {
         ontologyTermsQuery = listOfOntologyTerms;
+        categoryScores = getCategoryScores(categoryScorePropertiesFile);
     }
 
     @Override
@@ -65,11 +65,28 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
                 score += getOntologyScore(parentTerm);
             }
         }
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=" + score + " | List of terms: " + ontologyTermsQuery);
+        logger.debug( "Category UnNormalized score=" + score + " | List of terms: " + ontologyTermsQuery );
         return score;
+    }
+
+    /**
+     * Set a mapping between ontology children terms and root parents.
+     * It will fill up the class attribute "mappingParentTermskey"
+     * map "child ontology Id":"parent ontology Id".
+     *
+     * @param mapOfTerms A map "queried ontology term id":"children terms". Children
+     * terms are represented in nested map "ontology term id":"ontology term name".
+     */
+    protected void setMappingParentTerms(Map<String, Map<String, String>> mapOfTerms){
+        for(String parentTermId:mapOfTerms.keySet()){
+            Map<String,String> children = mapOfTerms.get(parentTermId);
+            /* Add children */
+            for(String childTermId:children.keySet()){
+                mappingParentTerms.put(childTermId, parentTermId);
+            }
+            /* Add parents */
+            mappingParentTerms.put(parentTermId,parentTermId);
+        }
     }
 
     /**
@@ -136,5 +153,21 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
      */
     public Map<String,String> getMappingParentTerms(){
         return mappingParentTerms;
+    }
+
+        /**
+     * Get category score properties from the scoreCategories.properties
+     * file.
+     * @return
+     */
+    private Properties getCategoryScores(String categoryScorePropertiesFile){
+        Properties properties = new Properties();
+        try {
+
+            properties.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
+        } catch (IOException e) {
+            logger.error("Error getting Properties file", e);
+        }
+        return properties;
     }
 }

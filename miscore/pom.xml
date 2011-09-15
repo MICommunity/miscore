@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.ebi.enfin.mi.score</groupId>
     <artifactId>miscore</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3.1-SNAPSHOT</version>
     <name>Molecular Interactions Score</name>
 
     <scm>
@@ -14,16 +14,6 @@
 
     <build>
         <plugins>
-            <!-- To compile with JDK5.0 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-
             <!-- This plugin creates a javadoc jar for pride-web. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -56,32 +46,19 @@
     </repositories>
 
     <dependencies>
-        <!-- logging dependencies -->
+        <!-- logging dependency -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.13</version>
         </dependency>
+        <!-- testing dependency -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.3.1</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.sun.xml.ws</groupId>-->
-        <!--<artifactId>jaxws-tools</artifactId>-->
-        <!--<version>2.1.4</version>-->
-        <!--</dependency>-->
-
-        <!-- OLS dependencies -->
-        <!--<dependency>-->
-        <!--<groupId>uk.ac.ebi</groupId>-->
-        <!--<artifactId>ols</artifactId>-->
-        <!--<version>1.14.1</version>-->
-        <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-
-        <!-- JSON dependencies -->
+        <!-- JSON dependency -->
         <dependency>
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>

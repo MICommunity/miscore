@@ -26,12 +26,12 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
 
          /* Terms to include automatically using OLS */
         ArrayList<String> parentTerms = new ArrayList<String>();
-        parentTerms.add("MI:0013");
-        parentTerms.add("MI:0090");
-        parentTerms.add("MI:0254");
-        parentTerms.add("MI:0255");
-        parentTerms.add("MI:0401");
-        parentTerms.add("MI:0428");
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
 
         Map<String, Map<String, String>> mapOfMethodTerms;
         MIOntology MIO = new MIOntology();
@@ -49,28 +49,15 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
     private void setOntologyMethodScores(){
         /* SET ONTOLOGY SCORE */
         Map<String, Float> defaultOntologyScore = new HashMap<String, Float>();
-        defaultOntologyScore.put("MI:0013", 3f); // cv1 // biophysical
-        defaultOntologyScore.put("MI:0090", 2f); // cv2 // protein complementation assay
-        defaultOntologyScore.put("MI:0254", 0.3f); // cv3 // genetic interference
-        defaultOntologyScore.put("MI:0255", 0.3f); // cv4 // post transcriptional interference
-        defaultOntologyScore.put("MI:0401", 3f); // cv5 // biochemical
-        defaultOntologyScore.put("MI:0428", 0.6f); // cv6 // imagining technique
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv1.id"),  new Float(categoryScores.getProperty("method.cv1.unNormalizedScore"))); // cv1 // biophysical
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv2.id"),  new Float(categoryScores.getProperty("method.cv2.unNormalizedScore"))); // cv2 // protein complementation assay
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv3.id"),  new Float(categoryScores.getProperty("method.cv3.unNormalizedScore"))); // cv3 // genetic interference
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv4.id"),  new Float(categoryScores.getProperty("method.cv4.unNormalizedScore"))); // cv4 // post transcriptional interference
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv5.id"),  new Float(categoryScores.getProperty("method.cv5.unNormalizedScore"))); // cv5 // biochemical
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv6.id"),  new Float(categoryScores.getProperty("method.cv6.unNormalizedScore"))); // cv6 // imagining technique
         /* Ontology terms not present in OLS will be consider null and classify as "unknown" terms */
-        defaultOntologyScore.put("unknown", 0.15f); // cv7 // unknown
+        defaultOntologyScore.put(categoryScores.getProperty("method.cv7.id"),  new Float(categoryScores.getProperty("method.cv7.unNormalizedScore"))); // cv7 // unknown
         setOntologyScore(defaultOntologyScore);
     }
 
-    private void setMappingParentTerms(Map<String, Map<String, String>> mapOfTypeTerms){
-        /* Update mapping automatically */
-        for(String term:mapOfTypeTerms.keySet()){
-            Map<String,String> children = mapOfTypeTerms.get(term);
-            for(String child:children.keySet()){
-                mappingParentTerms.put(child, term);
-            }
-            /* Add parents */
-            mappingParentTerms.put(term,term);
-        }
-        /* Update mapping manually */
-        // No terms to add manually
-    }
 }
