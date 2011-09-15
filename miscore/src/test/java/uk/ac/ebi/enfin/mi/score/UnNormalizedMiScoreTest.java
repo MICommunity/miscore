@@ -1,5 +1,6 @@
 package uk.ac.ebi.enfin.mi.score;
 import org.junit.Assert;
+import org.junit.Test;
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 import uk.ac.ebi.enfin.mi.score.scores.UnNormalizedMIScore;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 
 public class UnNormalizedMiScoreTest {
-
+    @Test
     public void testGetScore(){
         float score = 0.0f;
 
@@ -38,7 +39,7 @@ public class UnNormalizedMiScoreTest {
         score = tS.getScore();
         Assert.assertEquals( score, 16.39f );
     }
-
+    @Test
     public void testGetScoreWithLessQueriesToOLS(){
         float score = 0.0f;
         MIOntology MIO = new MIOntology();
@@ -78,7 +79,7 @@ public class UnNormalizedMiScoreTest {
         score = tS.getScore();
         Assert.assertTrue( score >= 0 && score >= 1 );
     }
-
+    @Test
     public void testGetScore2(){
         Float score = null;
 
@@ -97,9 +98,9 @@ public class UnNormalizedMiScoreTest {
         tS.setTypeScore(typeInput);
         tS.setPublicationScore(4);
         score = tS.getScore();
-        Assert.assertTrue(score >= 0 && score >= 1 );
+        Assert.assertTrue( score >= 0 && score >= 1 );
     }
-
+    @Test
     public void testSetTypeScore(){
         Float score = null;
         MIOntology MIO = new MIOntology();
@@ -144,5 +145,5 @@ public class UnNormalizedMiScoreTest {
         tS.setTypeScore(typeInput, mapOfTypeTerms, customOntologyTypeScores);
         tS.setPublicationScore(4);
         score = tS.getScore();
-        Assert.assertTrue(score >= 0 && score >= 1);    }
+        Assert.assertTrue( score >= 0 && score >= 1 );    }
 }
