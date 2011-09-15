@@ -1,11 +1,7 @@
 package uk.ac.ebi.enfin.mi.score;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.apache.log4j.Logger;
+import org.junit.Assert;
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 import uk.ac.ebi.enfin.mi.score.scores.UnNormalizedMIScore;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +14,7 @@ import java.util.Map;
  * @since <pre>28/03/11</pre>
  */
 
-public class UnNormalizedMiScoreTest extends TestCase {
-
-    private static String bout = "Bad output for";
-    static Logger logger = Logger.getLogger(TestMIScore.class);
+public class UnNormalizedMiScoreTest {
 
     public void testGetScore(){
         float score = 0.0f;
@@ -41,16 +34,9 @@ public class UnNormalizedMiScoreTest extends TestCase {
         UnNormalizedMIScore tS = new UnNormalizedMIScore();
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
-        tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
+        tS.setPublicationScore( 4 );
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        Assert.assertEquals(score, 16.39f);
+        Assert.assertEquals( score, 16.39f );
     }
 
     public void testGetScoreWithLessQueriesToOLS(){
@@ -89,15 +75,8 @@ public class UnNormalizedMiScoreTest extends TestCase {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score >= 1);
+        Assert.assertTrue( score >= 0 && score >= 1 );
     }
 
     public void testGetScore2(){
@@ -117,15 +96,8 @@ public class UnNormalizedMiScoreTest extends TestCase {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score >= 1);
+        Assert.assertTrue(score >= 0 && score >= 1 );
     }
 
     public void testSetTypeScore(){
@@ -171,13 +143,6 @@ public class UnNormalizedMiScoreTest extends TestCase {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms, customOntologyTypeScores);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score >= 1);    }
+        Assert.assertTrue(score >= 0 && score >= 1);    }
 }

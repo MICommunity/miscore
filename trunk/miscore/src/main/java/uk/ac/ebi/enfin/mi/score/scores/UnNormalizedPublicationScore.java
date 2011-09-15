@@ -31,12 +31,7 @@ public class UnNormalizedPublicationScore extends ConfidenceScore{
     @Override
     public Float getScore() {
         float score = numberOfPublications;
-
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getClass().getName());
-        logger.info("score=" + score + ", " + " | Number of publications: " + numberOfPublications);
-
+        logger.debug("Publication UnNormalized score=" + score + " | Number of publications: " + numberOfPublications);
         return score;
     }
 }

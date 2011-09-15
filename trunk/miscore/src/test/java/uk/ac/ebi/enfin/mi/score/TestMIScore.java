@@ -1,13 +1,13 @@
 package uk.ac.ebi.enfin.mi.score;
 
-import org.apache.log4j.Logger;
+
+import org.junit.Assert;
+import org.junit.Test;
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 import uk.ac.ebi.enfin.mi.score.scores.MIScore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,10 +16,8 @@ import junit.framework.TestCase;
  * Time: 12:02:57
  * To change this template use File | Settings | File Templates.
  */
-public class TestMIScore extends TestCase {
-    private static String bout = "Bad output for";
-    static Logger logger = Logger.getLogger(TestMIScore.class);
-
+public class TestMIScore {
+    @Test
     public void testGetScore(){
         Float score = null;
 
@@ -37,17 +35,12 @@ public class TestMIScore extends TestCase {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
 
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score <= 1);
+        Assert.assertTrue( score >= 0 && score <= 1 );
     }
 
+    @Test
     public void testGetScoreWithLessQueriesToOLS(){
         Float score = null;
         MIOntology MIO = new MIOntology();
@@ -84,17 +77,11 @@ public class TestMIScore extends TestCase {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score <= 1);
+        Assert.assertTrue(score >= 0 && score <= 1);
     }
 
+    @Test
     public void testGetScore2(){
         Float score = null;
 
@@ -112,17 +99,11 @@ public class TestMIScore extends TestCase {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score <= 1);
+        Assert.assertTrue(score >= 0 && score <= 1);
     }
 
+    @Test
     public void testSetTypeScore(){
         Float score = null;
         MIOntology MIO = new MIOntology();
@@ -166,13 +147,6 @@ public class TestMIScore extends TestCase {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms, customOntologyTypeScores);
         tS.setPublicationScore(4);
-
-        logger.info(tS.getPublicationScore());
-
         score = tS.getScore();
-
-        logger.info("- - - - - - -");
-        logger.info("# "+ this.getName());
-        logger.info(score);
-        assertTrue(bout + this.getName(), score >= 0 && score <= 1);    }
+        Assert.assertTrue(score >= 0 && score <= 1);    }
 }
