@@ -117,7 +117,7 @@ public abstract class CategoryScore extends ConfidenceScore{
     /**
      * Get category score properties from the scoreCategories.properties
      * file.
-     * @return
+     * @return properties object
      */
     private Properties getCategoryScores(String categoryScorePropertiesFile){
         Properties properties = new Properties();
@@ -182,7 +182,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Get ontology score mapping
-     * @return
+     * @return score
      */
     public Map<String,Float> getOntologyScore() {
         return ontologyScore;
@@ -191,7 +191,7 @@ public abstract class CategoryScore extends ConfidenceScore{
     /**
      * Get score for an ontology term
      * @param ontologyTerm
-     * @return
+     * @return score
      */
     public Float getOntologyScore(String ontologyTerm) {
         Float score = ontologyScore.get(ontologyTerm);
@@ -201,7 +201,7 @@ public abstract class CategoryScore extends ConfidenceScore{
     /**
      * Get parent terms for any ontology term for interaction type
      * @param ontologyTerm
-     * @return
+     * @return "parent ontology Id" for a "child ontology Id"
      */
     public String getMappingParentTerms(String ontologyTerm){
         String parent = mappingParentTerms.get(ontologyTerm);
@@ -210,7 +210,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Get the list of parent terms for interaction type
-     * @return
+     * @return  a map "child ontology Id":"parent ontology Id"
      */
     public Map<String,String> getMappingParentTerms(){
         return mappingParentTerms;
@@ -234,8 +234,8 @@ public abstract class CategoryScore extends ConfidenceScore{
     }
 
     /**
-     * 
-     * @return
+     * Get main categories
+     * @return a map "parent ontology Id":"category Id"
      */
     public Map<String, Integer> getMainCategories() {
         return mainCategories;
@@ -244,7 +244,7 @@ public abstract class CategoryScore extends ConfidenceScore{
     /**
      * Get a category for an ontology term
      * @param ontologyTerm
-     * @return
+     * @return category Id for a parent ontology Id
      */
     public Integer getMainCategories(String ontologyTerm) {
         return mainCategories.get(ontologyTerm);

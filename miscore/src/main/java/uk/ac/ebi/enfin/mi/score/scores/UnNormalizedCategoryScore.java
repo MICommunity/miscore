@@ -121,7 +121,7 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
 
     /**
      * Get ontology score mapping
-     * @return
+     * @return  a map "parent ontology Id":"score"
      */
     public Map<String,Float> getOntologyScore() {
         return ontologyScore;
@@ -130,7 +130,7 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
     /**
      * Get score for an ontology term
      * @param ontologyTerm
-     * @return
+     * @return  score
      */
     public Float getOntologyScore(String ontologyTerm) {
         Float score = ontologyScore.get(ontologyTerm);
@@ -140,7 +140,7 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
     /**
      * Get parent terms for any ontology term for interaction type
      * @param ontologyTerm
-     * @return
+     * @return "parent ontology Id" for a "child ontology Id"
      */
     public String getMappingParentTerms(String ontologyTerm){
         String parent = mappingParentTerms.get(ontologyTerm);
@@ -149,16 +149,16 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
 
     /**
      * Get the list of parent terms for interaction type
-     * @return
+     * @return a map "child ontology Id":"parent ontology Id"
      */
     public Map<String,String> getMappingParentTerms(){
         return mappingParentTerms;
     }
 
-        /**
+    /**
      * Get category score properties from the scoreCategories.properties
      * file.
-     * @return
+     * @return properties object
      */
     private Properties getCategoryScores(String categoryScorePropertiesFile){
         Properties properties = new Properties();

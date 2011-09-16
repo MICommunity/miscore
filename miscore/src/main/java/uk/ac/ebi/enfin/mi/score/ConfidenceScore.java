@@ -17,7 +17,7 @@ public abstract class ConfidenceScore {
      * Calculates logarithm
      * @param base
      * @param num
-     * @return
+     * @return logarithm value
      */
     protected Float logOfBase(Float base, Float num) {
         Double result = Math.log(num) / Math.log(base);
@@ -27,7 +27,7 @@ public abstract class ConfidenceScore {
     /**
      * Checks the result is a normalized value [0-1]
      * @param score
-     * @return
+     * @return true or false
      */
     protected boolean isValidScore(Float score){
         if(score >= 0 && score <= 1){

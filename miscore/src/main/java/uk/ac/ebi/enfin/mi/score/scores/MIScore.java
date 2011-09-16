@@ -27,7 +27,7 @@ public class MIScore extends ConfidenceScore{
 
     /**
      * Get the molecular interaction confidence score
-     * @return
+     * @return score
      */
     public Float getScore() {
         Float a = 0.0f;
@@ -54,7 +54,7 @@ public class MIScore extends ConfidenceScore{
 
     /**
      * Get the score for type
-     * @return
+     * @return score
      */
     public Float getTypeScore() {
         return typeScore;
@@ -131,7 +131,7 @@ public class MIScore extends ConfidenceScore{
 
     /**
      * Get the score for method
-     * @return
+     * @return score
      */
     public Float getMethodScore() {
         return methodScore;
@@ -207,7 +207,7 @@ public class MIScore extends ConfidenceScore{
 
     /**
      * Get the score for publication
-     * @return
+     * @return  score
      */
     public Float getPublicationScore() {
         return publicationScore;
@@ -244,8 +244,8 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weigh between 0 and 1 asigned for type score
-     * @return
+     * Return type weigh factor
+     * @return  weigh between 0 and 1 asigned for type score
      */
     public Float getTypeWeight() {
         return typeWeight;
@@ -260,8 +260,8 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weigh between 0 and 1 asigned for method score
-     * @return
+     * Return method weigh factor
+     * @return weigh between 0 and 1 asigned for method score
      */
     public Float getMethodWeight() {
         return methodWeight;
@@ -276,8 +276,8 @@ public class MIScore extends ConfidenceScore{
     }
 
     /**
-     * Return the weigh between 0 and 1 asigned for publication score
-     * @return
+     * Return publication weigh factor
+     * @return  weigh between 0 and 1 asigned for publication score
      */
     public Float getPublicationWeight() {
         return publicationWeight;
