@@ -20,7 +20,6 @@ This library calculates molecular interactions confidence scores using "MIscore"
 }}}
 <br>
 === An example of how to create a POM file using miscore: ===
-http://code.google.com/p/enfin-core/source/browse/trunk/enfin-core/clients/miscoreClient/pom.xml
 http://code.google.com/p/miscore/source/browse/trunk/miscore-example/pom.xml
 
 == Example ==
