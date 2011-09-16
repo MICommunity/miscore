@@ -36,8 +36,13 @@ Here an example of how to use MIscore to obtaing a confidence score for a molecu
 
 == Source code ==
 ==== Check out ====
+====== miscore ======
 {{{
 svn export https://miscore.googlecode.com/svn/trunk/miscore miscore
+}}}
+====== miscore-example ======
+{{{
+svn export https://miscore.googlecode.com/svn/trunk/miscore-example miscore-example
 }}}
 ==== Browse ====
   * [http://code.google.com/p/miscore/source/browse/#svn%2Ftrunk]
