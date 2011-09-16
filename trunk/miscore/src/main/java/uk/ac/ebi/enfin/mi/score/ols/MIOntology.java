@@ -26,9 +26,9 @@ public class MIOntology {
 
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
-     * term id. Return a map "ontology term id":"ontology term name".
+     * term id.
      * @param parentTerm
-     * @return
+     * @return a map "ontology term id":"ontology term name"
      */
     public Map<String,String> getJsonChildren(String parentTerm){
         mapIdName = new HashMap<String,String>();
@@ -89,10 +89,10 @@ public class MIOntology {
 
     /**
      * Get all the children terms in the MI ontology for more than one MI ontology
-     * term id. Return a map "queried ontology term id":"children terms". The children
-     * terms are represented in a map "ontology term id":"ontology term name".
+     * term id.
      * @param termsToQuery Parent ontology terms
-     * @return
+     * @return a map "queried ontology term id":"children terms". The children
+     * terms are represented in a map "ontology term id":"ontology term name".
      */
     public Map<String,Map<String,String>> getMapOfTerms(ArrayList<String> termsToQuery){
         Map<String,Map<String,String>> mapOfTerms = new HashMap<String,Map<String,String>>();

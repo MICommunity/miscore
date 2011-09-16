@@ -22,7 +22,7 @@ public class PublicationScore extends ConfidenceScore{
 
     /**
      * Get publication score 
-     * @return
+     * @return  score
      */
     public Float getScore() {
         Float a = 0.0f;
@@ -39,14 +39,26 @@ public class PublicationScore extends ConfidenceScore{
         return score;
     }
 
+    /**
+     * Get number of publications
+     * @return number of publications
+     */
     public Integer getNumberOfPublications() {
         return numberOfPublications;
     }
 
+    /**
+     * Get the number of publications which will get the highest score
+     * @return number of publications
+     */
     public Integer getPublicationNumberWithHighestScore() {
         return publicationNumberWithHighestScore;
     }
 
+    /**
+     * Set the number of publications which will get the highest score
+     * @param publicationNumberWithHighestScore
+     */
     public void setPublicationNumberWithHighestScore(Integer publicationNumberWithHighestScore) {
         this.publicationNumberWithHighestScore = publicationNumberWithHighestScore;
     }
