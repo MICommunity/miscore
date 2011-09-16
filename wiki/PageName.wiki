@@ -28,7 +28,7 @@ An example of how to create a POM file using MIscore:
   * [http://code.google.com/p/miscore/source/browse/trunk/miscore-example/pom.xml]
 <br>
 == Example ==
-Here an example of how to use MIscore to obtaing a confidence score for a molecular interaction:
+Here an example of how to use MIscore to get confidence scores for molecular interactions:
 
   * [http://code.google.com/p/miscore/source/browse/trunk/miscore-example/src/main/java/MIScoreClient.java]
 <br>
