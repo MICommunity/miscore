@@ -19,19 +19,21 @@ This library calculates molecular interactions confidence scores using "MIscore"
   </repository>
 }}}
 <br>
-=== An example of how to create a POM file using miscore: ===
+== POM file ==
+An example of how to create a POM file using miscore:
+<br>
 http://code.google.com/p/miscore/source/browse/trunk/miscore-example/pom.xml
-
+<br>
 == Example ==
 Here an example of how to use miscore to obtaing a confidence score for a molecular interaction:
 <br>
 http://code.google.com/p/miscore/source/browse/trunk/miscore-example/src/main/java/MIScoreClient.java
-
+<br>
 == Source code ==
 === Check out ===
 svn export https://miscore.googlecode.com/svn/trunk/miscore miscore
 === Browse ===
 http://code.google.com/p/miscore/source/browse/#svn%2Ftrunk
-
+<br>
 == jar file ==
 http://www.ebi.ac.uk/~maven/m2repo/uk/ac/ebi/enfin/mi/score/miscore/1.3.2/miscore-1.3.2.jar
