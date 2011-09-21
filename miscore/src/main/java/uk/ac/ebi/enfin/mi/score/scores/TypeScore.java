@@ -37,7 +37,7 @@ public class TypeScore extends CategoryScore {
         no children. Just include them in the mapping */
         mappingParentTerms.put(categoryScores.getProperty("type.cv3.id"),categoryScores.getProperty("type.cv3.id"));
         mappingParentTerms.put(categoryScores.getProperty("type.cv4.id"),categoryScores.getProperty("type.cv4.id"));
-        mappingParentTerms.put(categoryScores.getProperty("type.cv3.id"),categoryScores.getProperty("type.cv2.id"));
+        mappingParentTerms.put(categoryScores.getProperty("type.cv2.id"),categoryScores.getProperty("type.cv2.id"));
     }
 
     /**
