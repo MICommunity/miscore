@@ -82,7 +82,7 @@ public class MIOntology {
                     getMapIdNameFromJsonArray(nextTermChildren);
                 }
             } catch (JSONException e){
-                logger.debug("No children for " + termId);
+                //logger.debug("No children for " + termId);
             }
         }
     }
