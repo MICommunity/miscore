@@ -31,13 +31,12 @@ public class TypeScore extends CategoryScore {
         Map<String, Map<String, String>> mapOfTypeTerms;
         MIOntology MIO = new MIOntology();
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
+        /* No need to look for MI:0914 and "MI:0915 in OLS since they are parent terms of MI:0407 */
+        mapOfTypeTerms.put(categoryScores.getProperty("type.cv3.id"), new HashMap<String, String>());
+        mapOfTypeTerms.put(categoryScores.getProperty("type.cv4.id"), new HashMap<String, String>());
+        /* No need to look for MI:0403 since it has no children. Just include them in the mappingParentTerms */
+        mapOfTypeTerms.put(categoryScores.getProperty("type.cv2.id"), new HashMap<String, String>());
         setMappingParentTerms(mapOfTypeTerms);
-        /* No need to look for MI:0914 and "MI:0915 in OLS since they are
-        parent terms of MI:0407. No need to look for MI:0403 since it has
-        no children. Just include them in the mapping */
-        mappingParentTerms.put(categoryScores.getProperty("type.cv3.id"),categoryScores.getProperty("type.cv3.id"));
-        mappingParentTerms.put(categoryScores.getProperty("type.cv4.id"),categoryScores.getProperty("type.cv4.id"));
-        mappingParentTerms.put(categoryScores.getProperty("type.cv2.id"),categoryScores.getProperty("type.cv2.id"));
     }
 
     /**
