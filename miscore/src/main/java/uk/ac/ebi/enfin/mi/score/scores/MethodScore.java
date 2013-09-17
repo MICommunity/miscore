@@ -21,6 +21,17 @@ public class MethodScore extends CategoryScore{
       * detection methods for one interaction
       */
     public MethodScore(ArrayList<String> listOfOntologyTerms) {
+          this(listOfOntologyTerms,true);
+    }
+
+    /**
+     *
+     * @param listOfOntologyTerms List of ontology term IDs defining
+      * detection methods for one interaction
+     * @param useOls specify with true you would like to use OLS as remote ontology
+     * or with false to use a local ontology
+     */
+    public MethodScore(ArrayList<String> listOfOntologyTerms, boolean useOls) {
         super(listOfOntologyTerms);
         setOntologyMethodScores();
         setOntologyMethodCategories();
@@ -35,7 +46,7 @@ public class MethodScore extends CategoryScore{
         parentTerms.add("MI:0428");
 
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         setMappingParentTerms(mapOfMethodTerms);

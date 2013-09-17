@@ -17,6 +17,14 @@ import java.util.Map;
 public class UnNormalizedMIScore extends MIScore {
     private static final Logger logger = Logger.getLogger(UnNormalizedMIScore.class);
 
+    public UnNormalizedMIScore(boolean remoteOntology) {
+        super(remoteOntology);
+    }
+
+    public UnNormalizedMIScore() {
+        super();
+    }
+
     @Override
     protected boolean isValidScore(Float score){
         if(score >= 0){
@@ -48,7 +56,7 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms){
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms);
+        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms,this.useOls);
         this.typeScore = tS.getScore();
     }
 
@@ -60,7 +68,7 @@ public class UnNormalizedMIScore extends MIScore {
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms){
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
         UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
@@ -75,7 +83,7 @@ public class UnNormalizedMIScore extends MIScore {
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms, Map<String,Float> customOntologyScores){
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
         UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
@@ -113,7 +121,7 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms){
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms);
+        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms,this.useOls);
         this.methodScore = mS.getScore();
     }
 
@@ -125,7 +133,7 @@ public class UnNormalizedMIScore extends MIScore {
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms){
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
@@ -140,7 +148,7 @@ public class UnNormalizedMIScore extends MIScore {
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms, Map<String,Float> customOntologyScores){
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);

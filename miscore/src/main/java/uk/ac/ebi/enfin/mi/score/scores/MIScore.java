@@ -22,8 +22,17 @@ public class MIScore extends ConfidenceScore{
     private Float typeWeight = 1.0f;
     private Float methodWeight = 1.0f;
     private Float publicationWeight = 1.0f;
+    protected boolean useOls;
 
-    public MIScore(){}
+
+    public MIScore(){
+        this.useOls = true;
+    }
+
+    public MIScore(boolean useRemoteOntology){
+        this.useOls = useRemoteOntology;
+    }
+
 
     /**
      * Get the molecular interaction confidence score
@@ -73,7 +82,7 @@ public class MIScore extends ConfidenceScore{
      * @param listOfOntologyTerms
      */
     public void setTypeScore(ArrayList<String> listOfOntologyTerms){
-        TypeScore tS = new TypeScore(listOfOntologyTerms);
+        TypeScore tS = new TypeScore(listOfOntologyTerms, this.useOls);
         this.typeScore = tS.getScore();
     }
 
@@ -84,7 +93,7 @@ public class MIScore extends ConfidenceScore{
      */
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms){
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
         TypeScore tS = new TypeScore(listOfOntologyTerms, mapOfTypeTerms);
@@ -98,7 +107,7 @@ public class MIScore extends ConfidenceScore{
      */
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms, Map<String,Float> customOntologyScores){
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
         TypeScore tS = new TypeScore(listOfOntologyTerms, mapOfTypeTerms);
@@ -151,7 +160,7 @@ public class MIScore extends ConfidenceScore{
      * @param listOfOntologyTerms
      */
     public void setMethodScore(ArrayList<String> listOfOntologyTerms){
-        MethodScore mS = new MethodScore(listOfOntologyTerms);
+        MethodScore mS = new MethodScore(listOfOntologyTerms,this.useOls);
         this.methodScore = mS.getScore();
     }
 
@@ -162,7 +171,7 @@ public class MIScore extends ConfidenceScore{
      */
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms){
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         MethodScore mS = new MethodScore(listOfOntologyTerms, mapOfMethodTerms);
@@ -176,7 +185,7 @@ public class MIScore extends ConfidenceScore{
      */
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, ArrayList<String> parentTerms, Map<String,Float> customOntologyScores){
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         MethodScore mS = new MethodScore(listOfOntologyTerms, mapOfMethodTerms);

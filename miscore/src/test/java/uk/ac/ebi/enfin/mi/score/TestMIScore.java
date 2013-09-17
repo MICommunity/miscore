@@ -104,6 +104,28 @@ public class TestMIScore {
     }
 
     @Test
+    public void testGetScoreUsingLocalOntology(){
+        Float score = null;
+
+        ArrayList methodInput = new ArrayList();
+        methodInput.add("MI:0051");
+        methodInput.add("MI:0042");
+
+        ArrayList typeInput = new ArrayList();
+        typeInput.add("MI:0208");
+        typeInput.add("MI:0403");
+        typeInput.add("MI:0407");
+        typeInput.add("MI:0407");
+
+        MIScore tS = new MIScore(false);
+        tS.setMethodScore(methodInput);
+        tS.setTypeScore(typeInput);
+        tS.setPublicationScore(4);
+        score = tS.getScore();
+        Assert.assertTrue(score >= 0 && score <= 1);
+    }
+
+    @Test
     public void testSetTypeScore(){
         Float score = null;
         MIOntology MIO = new MIOntology();

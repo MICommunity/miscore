@@ -1,8 +1,9 @@
 package uk.ac.ebi.enfin.mi.score.ols;
 
-import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Map;
 
 
 
@@ -27,6 +28,14 @@ public class TestMIOntology {
         MIOntology MIO = new MIOntology();
         Map<String,String> children = MIO.getJsonChildren("MI:0660");
         Assert.assertTrue(children.size() > 6);
+    }
+
+
+    @Test
+    public void testGetJsonChildrenFromFile(){
+        MIOntology MIO = new MIOntology(false);
+        Map<String,String> children = MIO.getJsonChildren("MI:0000");
+
     }
 
 }

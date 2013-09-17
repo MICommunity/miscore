@@ -16,12 +16,20 @@ import java.util.Map;
 
 public class UnNormalizedTypeScore extends UnNormalizedCategoryScore {
 
-     /**
+    /**
      * This class requires a list of query ontology terms as input
-     *
      * @param listOfOntologyTerms
      */
-    public UnNormalizedTypeScore(ArrayList<String> listOfOntologyTerms) {
+        public UnNormalizedTypeScore(ArrayList<String> listOfOntologyTerms) {
+            this(listOfOntologyTerms, true);
+        }
+
+    /**
+     * This class requires a list of query ontology terms as input
+     * @param listOfOntologyTerms
+     * @param useOls
+     */
+    public UnNormalizedTypeScore(ArrayList<String> listOfOntologyTerms, boolean useOls) {
         super(listOfOntologyTerms);
         setOntologyTypeScores();
 
@@ -30,7 +38,7 @@ public class UnNormalizedTypeScore extends UnNormalizedCategoryScore {
         parentTerms.add(categoryScores.getProperty("type.cv1.id"));
         parentTerms.add(categoryScores.getProperty("type.cv5.id"));
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
         setMappingParentTerms(mapOfTypeTerms);
         /* No need to look for MI:0914 and "MI:0915 in OLS since they are
