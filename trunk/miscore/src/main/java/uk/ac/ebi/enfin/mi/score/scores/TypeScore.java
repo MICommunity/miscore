@@ -20,6 +20,9 @@ public class TypeScore extends CategoryScore {
       * interaction types for one interaction
      */
     public TypeScore(ArrayList<String> listOfOntologyTerms) {
+        this(listOfOntologyTerms,true);
+    }
+    public TypeScore(ArrayList<String> listOfOntologyTerms,boolean useOls) {
         super(listOfOntologyTerms);
         setOntologyTypeScores();
         setOntologyTypeCategories();
@@ -29,7 +32,7 @@ public class TypeScore extends CategoryScore {
         parentTerms.add(categoryScores.getProperty("type.cv1.id"));
         parentTerms.add(categoryScores.getProperty("type.cv5.id"));
         Map<String, Map<String, String>> mapOfTypeTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
         /* No need to look for MI:0914 and "MI:0915 in OLS since they are parent terms of MI:0407 */
         mapOfTypeTerms.put(categoryScores.getProperty("type.cv3.id"), new HashMap<String, String>());

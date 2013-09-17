@@ -15,12 +15,19 @@ import java.util.Map;
  */
 
 public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
+    /**
+     * This class requires a list of ontology terms as input
+     * @param listOfOntologyTerms
+     */
+    public UnNormalizedMethodScore(ArrayList<String> listOfOntologyTerms) {
+        this(listOfOntologyTerms,true);
+    }
      /**
      * This class requires a list of ontology terms as input
      *
      * @param listOfOntologyTerms
      */
-    public UnNormalizedMethodScore(ArrayList<String> listOfOntologyTerms) {
+    public UnNormalizedMethodScore(ArrayList<String> listOfOntologyTerms, boolean useOls) {
         super(listOfOntologyTerms);
         setOntologyMethodScores();
 
@@ -34,7 +41,7 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
         parentTerms.add(categoryScores.getProperty("method.cv1.id"));
 
         Map<String, Map<String, String>> mapOfMethodTerms;
-        MIOntology MIO = new MIOntology();
+        MIOntology MIO = new MIOntology(useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
         setMappingParentTerms(mapOfMethodTerms);
