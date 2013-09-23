@@ -34,6 +34,11 @@ public class MIScore extends ConfidenceScore{
     }
 
 
+    public boolean isUseOls() {
+        return useOls;
+    }
+
+
     /**
      * Get the molecular interaction confidence score
      * @return score

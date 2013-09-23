@@ -114,7 +114,12 @@ public class MIOntology {
         return getMapIdNameFromJsonObject(jsonObject);
     }
 
-
+    /**
+     * Find ontology term recursive method
+     * @param jsonObject
+     * @param ontologyTerm
+     * @return
+     */
     private JSONObject findOntologyTerm(JSONObject jsonObject,String ontologyTerm){
         String id = jsonObject.getString("id");
         if(id.equalsIgnoreCase(ontologyTerm)){
@@ -129,7 +134,6 @@ public class MIOntology {
                         return jsonChild;
                     }
                 }
-                //todo: findOntologyTerm
                 for(Object child:termChildren){
                     JSONObject jsonChild = (JSONObject) JSONSerializer.toJSON(child);
                     JSONObject jsonChildObject = findOntologyTerm(jsonChild,ontologyTerm);
