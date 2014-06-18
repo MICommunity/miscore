@@ -33,12 +33,13 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
 
          /* Terms to include automatically using OLS */
         ArrayList<String> parentTerms = new ArrayList<String>();
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
-        parentTerms.add(categoryScores.getProperty("method.cv1.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv1.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv2.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv3.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv4.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv5.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv6.id"));
+        parentTerms.add(getCategoryScores().getProperty("method.cv7.id"));
 
         Map<String, Map<String, String>> mapOfMethodTerms;
         MIOntology MIO = new MIOntology(useOls);
@@ -56,14 +57,14 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
     private void setOntologyMethodScores(){
         /* SET ONTOLOGY SCORE */
         Map<String, Float> defaultOntologyScore = new HashMap<String, Float>();
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv1.id"),  new Float(categoryScores.getProperty("method.cv1.unNormalizedScore"))); // cv1 // biophysical
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv2.id"),  new Float(categoryScores.getProperty("method.cv2.unNormalizedScore"))); // cv2 // protein complementation assay
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv3.id"),  new Float(categoryScores.getProperty("method.cv3.unNormalizedScore"))); // cv3 // genetic interference
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv4.id"),  new Float(categoryScores.getProperty("method.cv4.unNormalizedScore"))); // cv4 // post transcriptional interference
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv5.id"),  new Float(categoryScores.getProperty("method.cv5.unNormalizedScore"))); // cv5 // biochemical
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv6.id"),  new Float(categoryScores.getProperty("method.cv6.unNormalizedScore"))); // cv6 // imagining technique
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv1.id"),  new Float(getCategoryScores().getProperty("method.cv1.unNormalizedScore"))); // cv1 // biophysical
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv2.id"),  new Float(getCategoryScores().getProperty("method.cv2.unNormalizedScore"))); // cv2 // protein complementation assay
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv3.id"),  new Float(getCategoryScores().getProperty("method.cv3.unNormalizedScore"))); // cv3 // genetic interference
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv4.id"),  new Float(getCategoryScores().getProperty("method.cv4.unNormalizedScore"))); // cv4 // post transcriptional interference
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv5.id"),  new Float(getCategoryScores().getProperty("method.cv5.unNormalizedScore"))); // cv5 // biochemical
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv6.id"),  new Float(getCategoryScores().getProperty("method.cv6.unNormalizedScore"))); // cv6 // imagining technique
         /* Ontology terms not present in OLS will be consider null and classify as "unknown" terms */
-        defaultOntologyScore.put(categoryScores.getProperty("method.cv7.id"),  new Float(categoryScores.getProperty("method.cv7.unNormalizedScore"))); // cv7 // unknown
+        defaultOntologyScore.put(getCategoryScores().getProperty("method.cv7.id"),  new Float(getCategoryScores().getProperty("method.cv7.unNormalizedScore"))); // cv7 // unknown
         setOntologyScore(defaultOntologyScore);
     }
 

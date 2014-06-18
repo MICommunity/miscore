@@ -6,10 +6,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -28,6 +25,7 @@ public class MIOntology {
     static Logger logger = Logger.getLogger(MIOntology.class);
     private Map<String,String> mapIdName;
     private final String psimiJson = "psimiOntology.json";
+    private static String psimiJsonContent;
     boolean useOLS;
 
     public MIOntology() {
@@ -37,6 +35,25 @@ public class MIOntology {
     public MIOntology(boolean useOLS) {
         this.useOLS = useOLS;
 
+    }
+
+    public InputStream getPsimiJsonContent() {
+        if (psimiJsonContent == null) {
+            InputStream aux = this.getClass().getClassLoader().getResourceAsStream(this.psimiJson);
+            BufferedReader br = new BufferedReader(new InputStreamReader(aux));
+            StringBuilder content = new StringBuilder();
+            String line;
+            try {
+                while((line = br.readLine()) != null){
+                    content.append(line);
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.psimiJsonContent = content.toString();
+        }
+        return new ByteArrayInputStream(this.psimiJsonContent.getBytes());
     }
 
 
@@ -102,7 +119,7 @@ public class MIOntology {
      */
     private Map<String,String> getJsonChildrenFromFile(String parentTerm){
         String json = "";
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(this.psimiJson);
+        InputStream is = getPsimiJsonContent();
         json = getStringFromInputStream(is);
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);
         //jsonObject.get("children").toString();
