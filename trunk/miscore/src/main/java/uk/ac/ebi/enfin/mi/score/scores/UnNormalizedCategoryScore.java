@@ -21,7 +21,7 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
     protected Map<String,String> mappingParentTerms = new HashMap<String,String>();
     private static final Logger logger = Logger.getLogger(UnNormalizedCategoryScore.class);
     private static final String categoryScorePropertiesFile = "scoreCategories.properties";
-    protected Properties categoryScores;
+    private static Properties categoryScores;
 
     /**
      * This class requires a list of ontology terms as input
@@ -161,13 +161,25 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
      * @return properties object
      */
     private Properties getCategoryScores(String categoryScorePropertiesFile){
-        Properties properties = new Properties();
-        try {
-
-            properties.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
-        } catch (IOException e) {
-            logger.error("Error getting Properties file", e);
+        if (UnNormalizedCategoryScore.categoryScores == null) {
+            UnNormalizedCategoryScore.categoryScores = new Properties();
+            try {
+                UnNormalizedCategoryScore.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
+            } catch (IOException e) {
+                logger.error("Error getting Properties file", e);
+            }
         }
-        return properties;
+        return UnNormalizedCategoryScore.categoryScores;
+    }
+    public Properties getCategoryScores(){
+        if (UnNormalizedCategoryScore.categoryScores == null) {
+            UnNormalizedCategoryScore.categoryScores = new Properties();
+            try {
+                UnNormalizedCategoryScore.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(this.categoryScorePropertiesFile));
+            } catch (IOException e) {
+                logger.error("Error getting Properties file", e);
+            }
+        }
+        return UnNormalizedCategoryScore.categoryScores;
     }
 }
