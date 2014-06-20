@@ -86,6 +86,9 @@ public class TypeScore extends CategoryScore {
     }
 
 
+    public void setMapOfTypeTerms(Map<String, Map<String,String>> mapOfTypeTerms) {
+        setMappingParentTerms(mapOfTypeTerms);
+    }
 
 
 

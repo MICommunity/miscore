@@ -25,7 +25,7 @@ public class MIOntology {
     static Logger logger = Logger.getLogger(MIOntology.class);
     private Map<String,String> mapIdName;
     private final String psimiJson = "psimiOntology.json";
-    private static String psimiJsonContent;
+    private String psimiJsonContent;
     boolean useOLS;
 
     public MIOntology() {
@@ -38,7 +38,7 @@ public class MIOntology {
     }
 
     public InputStream getPsimiJsonContent() {
-        if (psimiJsonContent == null) {
+        if (this.psimiJsonContent == null) {
             InputStream aux = this.getClass().getClassLoader().getResourceAsStream(this.psimiJson);
             BufferedReader br = new BufferedReader(new InputStreamReader(aux));
             StringBuilder content = new StringBuilder();
@@ -127,6 +127,11 @@ public class MIOntology {
         if(jsonResults == null){
             jsonResults = new JSONObject();
             jsonResults.put(parentTerm, "unknown");
+        }
+        try {
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return getMapIdNameFromJsonObject(jsonObject);
     }
