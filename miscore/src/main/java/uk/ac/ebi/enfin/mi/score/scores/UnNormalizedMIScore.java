@@ -38,10 +38,10 @@ public class UnNormalizedMIScore extends MIScore {
         Float score = 0.0f;
 
         if(getTypeScore() != null) {
-            score += (getTypeScore()*getTypeWeight());
+            score += (((UnNormalizedTypeScore)getTypeScore()).getScore()*getTypeWeight());
         }
         if(getMethodScore() != null) {
-            score += (getMethodScore()*getMethodWeight());
+            score += (((UnNormalizedMethodScore)getMethodScore()).getScore()*getMethodWeight());
         }
         if(getPublicationScore() != null) {
             score += (getPublicationScore()*getPublicationWeight());
@@ -56,8 +56,14 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms){
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms,this.useOls);
-        this.typeScore = tS.getScore();
+        UnNormalizedTypeScore tS;
+        if (this.typeScore == null) {
+            tS = new UnNormalizedTypeScore(listOfOntologyTerms, this.useOls);
+        }
+        else {
+            tS = (UnNormalizedTypeScore) this.typeScore;
+        }
+        this.typeScore = tS;
     }
 
     /**
@@ -71,8 +77,14 @@ public class UnNormalizedMIScore extends MIScore {
         MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
-        this.typeScore = tS.getScore();
+        UnNormalizedTypeScore tS;
+        if (this.typeScore == null) {
+            tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        }
+        else {
+            tS = (UnNormalizedTypeScore) this.typeScore;
+        }
+        this.typeScore = tS;
     }
 
     /**
@@ -86,9 +98,15 @@ public class UnNormalizedMIScore extends MIScore {
         MIOntology MIO = new MIOntology(this.useOls);
         mapOfTypeTerms = MIO.getMapOfTerms(parentTerms);
 
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        UnNormalizedTypeScore tS;
+        if (this.typeScore == null) {
+            tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        }
+        else {
+            tS = (UnNormalizedTypeScore) this.typeScore;
+        }
         tS.setNewOntologyScore(customOntologyScores);
-        this.typeScore = tS.getScore();
+        this.typeScore = tS;
     }
 
     /**
@@ -98,8 +116,14 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfTypeTerms){
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
-        this.typeScore = tS.getScore();
+        UnNormalizedTypeScore tS;
+        if (this.typeScore == null) {
+            tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        }
+        else {
+            tS = (UnNormalizedTypeScore) this.typeScore;
+        }
+        this.typeScore = tS;
     }
 
     /**
@@ -110,9 +134,15 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setTypeScore(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfTypeTerms, Map<String,Float> customOntologyScores){
-        UnNormalizedTypeScore tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        UnNormalizedTypeScore tS;
+        if (this.typeScore == null) {
+            tS = new UnNormalizedTypeScore(listOfOntologyTerms, mapOfTypeTerms);
+        }
+        else {
+            tS = (UnNormalizedTypeScore) this.typeScore;
+        }
         tS.setNewOntologyScore(customOntologyScores);
-        this.typeScore = tS.getScore();
+        this.typeScore = tS;
     }
 
     /**
@@ -121,8 +151,14 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms){
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms,this.useOls);
-        this.methodScore = mS.getScore();
+        UnNormalizedMethodScore mS;
+        if(this.methodScore == null) {
+            mS = new UnNormalizedMethodScore(listOfOntologyTerms, this.useOls);
+        }
+        else{
+            mS = (UnNormalizedMethodScore) this.methodScore;
+        }
+        this.methodScore = mS;
     }
 
     /**
@@ -136,8 +172,14 @@ public class UnNormalizedMIScore extends MIScore {
         MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
-        this.methodScore = mS.getScore();
+        UnNormalizedMethodScore mS;
+        if(this.methodScore == null) {
+            mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        }
+        else{
+            mS = (UnNormalizedMethodScore) this.methodScore;
+        }
+        this.methodScore = mS;
     }
 
     /**
@@ -151,9 +193,15 @@ public class UnNormalizedMIScore extends MIScore {
         MIOntology MIO = new MIOntology(this.useOls);
         mapOfMethodTerms = MIO.getMapOfTerms(parentTerms);
 
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        UnNormalizedMethodScore mS;
+        if(this.methodScore == null) {
+            mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        }
+        else{
+            mS = (UnNormalizedMethodScore) this.methodScore;
+        }
         mS.setNewOntologyScore(customOntologyScores);
-        this.methodScore = mS.getScore();
+        this.methodScore = mS;
     }
 
     /**
@@ -163,8 +211,14 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfMethodTerms){
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
-        this.methodScore = mS.getScore();
+        UnNormalizedMethodScore mS;
+        if(this.methodScore == null) {
+            mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        }
+        else{
+            mS = (UnNormalizedMethodScore) this.methodScore;
+        }
+        this.methodScore = mS;
     }
 
     /**
@@ -174,9 +228,15 @@ public class UnNormalizedMIScore extends MIScore {
      */
     @Override
     public void setMethodScore(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfMethodTerms, Map<String,Float> customOntologyScores){
-        UnNormalizedMethodScore mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        UnNormalizedMethodScore mS;
+        if(this.methodScore == null) {
+            mS = new UnNormalizedMethodScore(listOfOntologyTerms, mapOfMethodTerms);
+        }
+        else{
+            mS = (UnNormalizedMethodScore) this.methodScore;
+        }
         mS.setNewOntologyScore(customOntologyScores);
-        this.methodScore = mS.getScore();
+        this.methodScore = mS;
     }
 
     /**

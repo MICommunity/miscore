@@ -97,4 +97,8 @@ public class MethodScore extends CategoryScore{
         setMainCategories(defaultMainCategories);
     }
 
+    public void setMapOfMethodTerms(Map<String, Map<String,String>> mapOfMethodTerms) {
+        setMappingParentTerms(mapOfMethodTerms);
+    }
+
 }

@@ -20,8 +20,8 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
     protected Map<String,Float> ontologyScore = new HashMap<String,Float>();
     protected Map<String,String> mappingParentTerms = new HashMap<String,String>();
     private static final Logger logger = Logger.getLogger(UnNormalizedCategoryScore.class);
-    private static final String categoryScorePropertiesFile = "scoreCategories.properties";
-    private static Properties categoryScores;
+    private String categoryScorePropertiesFile = "scoreCategories.properties";
+    public Properties categoryScores;
 
     /**
      * This class requires a list of ontology terms as input
@@ -160,26 +160,23 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
      * file.
      * @return properties object
      */
-    private Properties getCategoryScores(String categoryScorePropertiesFile){
-        if (UnNormalizedCategoryScore.categoryScores == null) {
-            UnNormalizedCategoryScore.categoryScores = new Properties();
+    private Properties getCategoryScores(String categoryScorePropertiesFile) {
+        if (this.categoryScores == null) {
+            this.categoryScores = new Properties();
             try {
-                UnNormalizedCategoryScore.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
+                this.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
             } catch (IOException e) {
                 logger.error("Error getting Properties file", e);
             }
         }
-        return UnNormalizedCategoryScore.categoryScores;
+        return this.categoryScores;
     }
-    public Properties getCategoryScores(){
-        if (UnNormalizedCategoryScore.categoryScores == null) {
-            UnNormalizedCategoryScore.categoryScores = new Properties();
-            try {
-                UnNormalizedCategoryScore.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(this.categoryScorePropertiesFile));
-            } catch (IOException e) {
-                logger.error("Error getting Properties file", e);
-            }
-        }
-        return UnNormalizedCategoryScore.categoryScores;
+
+    public String getCategoryScorePropertiesFile() {
+        return categoryScorePropertiesFile;
+    }
+
+    public void setCategoryScorePropertiesFile(String categoryScorePropertiesFile) {
+        this.categoryScorePropertiesFile = categoryScorePropertiesFile;
     }
 }

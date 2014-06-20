@@ -120,14 +120,15 @@ public abstract class CategoryScore extends ConfidenceScore{
      * @return properties object
      */
     private Properties getCategoryScores(String categoryScorePropertiesFile){
-        Properties properties = new Properties();
-        try {
-
-            properties.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
-        } catch (IOException e) {
-            logger.error("Error getting Properties file", e);
+        if (this.categoryScores == null) {
+            this.categoryScores = new Properties();
+            try {
+                this.categoryScores.load(this.getClass().getClassLoader().getResourceAsStream(categoryScorePropertiesFile));
+            } catch (IOException e) {
+                logger.error("Error getting Properties file", e);
+            }
         }
-        return properties;
+        return this.categoryScores;
     }
 
     /**
