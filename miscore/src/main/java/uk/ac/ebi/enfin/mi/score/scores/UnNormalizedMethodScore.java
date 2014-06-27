@@ -4,6 +4,7 @@ import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,6 +53,12 @@ public class UnNormalizedMethodScore extends UnNormalizedCategoryScore {
         super(listOfOntologyTerms);
         setOntologyMethodScores();
         setMappingParentTerms(mapOfMethodTerms);
+    }
+
+    public void restoreInitialState(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfMethodTerms){
+        this.restoreInitialState(listOfOntologyTerms);
+        this.setOntologyMethodScores();
+        this.setMappingParentTerms(mapOfMethodTerms);
     }
 
     private void setOntologyMethodScores(){

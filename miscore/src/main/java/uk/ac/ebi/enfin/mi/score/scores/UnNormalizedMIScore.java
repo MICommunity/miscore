@@ -3,6 +3,7 @@ package uk.ac.ebi.enfin.mi.score.scores;
 import org.apache.log4j.Logger;
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 
 public class UnNormalizedMIScore extends MIScore {
     private static final Logger logger = Logger.getLogger(UnNormalizedMIScore.class);
+    private DecimalFormat df = new DecimalFormat("#.0");
 
     public UnNormalizedMIScore(boolean remoteOntology) {
         super(remoteOntology);
@@ -47,7 +49,7 @@ public class UnNormalizedMIScore extends MIScore {
             score += (getPublicationScore()*getPublicationWeight());
         }
         logger.debug("MIscore UnNormalized = " + score );
-        return score;
+        return Float.parseFloat(df.format(score));
     }
 
     /**
@@ -62,6 +64,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else {
             tS = (UnNormalizedTypeScore) this.typeScore;
+            tS.restoreInitialState(listOfOntologyTerms);
         }
         this.typeScore = tS;
     }
@@ -83,6 +86,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else {
             tS = (UnNormalizedTypeScore) this.typeScore;
+            tS.restoreInitialState(listOfOntologyTerms, mapOfTypeTerms);
         }
         this.typeScore = tS;
     }
@@ -104,6 +108,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else {
             tS = (UnNormalizedTypeScore) this.typeScore;
+            tS.restoreInitialState(listOfOntologyTerms, mapOfTypeTerms);
         }
         tS.setNewOntologyScore(customOntologyScores);
         this.typeScore = tS;
@@ -122,6 +127,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else {
             tS = (UnNormalizedTypeScore) this.typeScore;
+            tS.restoreInitialState(listOfOntologyTerms, mapOfTypeTerms);
         }
         this.typeScore = tS;
     }
@@ -140,6 +146,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else {
             tS = (UnNormalizedTypeScore) this.typeScore;
+            tS.restoreInitialState(listOfOntologyTerms, mapOfTypeTerms);
         }
         tS.setNewOntologyScore(customOntologyScores);
         this.typeScore = tS;
@@ -157,6 +164,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else{
             mS = (UnNormalizedMethodScore) this.methodScore;
+            mS.restoreInitialState(listOfOntologyTerms);
         }
         this.methodScore = mS;
     }
@@ -178,6 +186,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else{
             mS = (UnNormalizedMethodScore) this.methodScore;
+            mS.restoreInitialState(listOfOntologyTerms, mapOfMethodTerms);
         }
         this.methodScore = mS;
     }
@@ -199,6 +208,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else{
             mS = (UnNormalizedMethodScore) this.methodScore;
+            mS.restoreInitialState(listOfOntologyTerms, mapOfMethodTerms);
         }
         mS.setNewOntologyScore(customOntologyScores);
         this.methodScore = mS;
@@ -217,6 +227,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else{
             mS = (UnNormalizedMethodScore) this.methodScore;
+            mS.restoreInitialState(listOfOntologyTerms, mapOfMethodTerms);
         }
         this.methodScore = mS;
     }
@@ -234,6 +245,7 @@ public class UnNormalizedMIScore extends MIScore {
         }
         else{
             mS = (UnNormalizedMethodScore) this.methodScore;
+            mS.restoreInitialState(listOfOntologyTerms, mapOfMethodTerms);
         }
         mS.setNewOntologyScore(customOntologyScores);
         this.methodScore = mS;

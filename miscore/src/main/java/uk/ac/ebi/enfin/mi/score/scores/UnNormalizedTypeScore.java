@@ -56,6 +56,12 @@ public class UnNormalizedTypeScore extends UnNormalizedCategoryScore {
         setMappingParentTerms(mapOfTypeTerms);
     }
 
+    public void restoreInitialState(ArrayList<String> listOfOntologyTerms, Map<String, Map<String,String>> mapOfTypeTerms){
+        this.restoreInitialState(listOfOntologyTerms);
+        this.setOntologyTypeScores();
+        this.setMappingParentTerms(mapOfTypeTerms);
+    }
+
     private void setOntologyTypeScores(){
         /* SET ONTOLOGY SCORE */
         Map<String, Float> defaultOntologyScore = new HashMap<String, Float>();

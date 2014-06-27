@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import uk.ac.ebi.enfin.mi.score.ConfidenceScore;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -29,6 +30,10 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
      * @param listOfOntologyTerms
      */
     public UnNormalizedCategoryScore(ArrayList<String> listOfOntologyTerms) {
+        restoreInitialState(listOfOntologyTerms);
+    }
+
+    public void restoreInitialState(ArrayList<String> listOfOntologyTerms){
         ontologyTermsQuery = listOfOntologyTerms;
         categoryScores = getCategoryScores(categoryScorePropertiesFile);
     }
@@ -178,5 +183,9 @@ public class UnNormalizedCategoryScore extends ConfidenceScore {
 
     public void setCategoryScorePropertiesFile(String categoryScorePropertiesFile) {
         this.categoryScorePropertiesFile = categoryScorePropertiesFile;
+    }
+
+    public void setListOfOntologyTerms(List<String> listOfOntologyTerms){
+        this.ontologyTermsQuery = listOfOntologyTerms;
     }
 }
