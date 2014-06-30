@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.ebi.enfin.mi.score</groupId>
     <artifactId>miscore</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6-SNAPSHOT</version>
     <name>Molecular Interactions Score</name>
 
     <scm>
-        <connection>scm:svn:https://enfin-core.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://enfin-core.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/enfin-core/source/browse/trunk/</url>
+        <connection>scm:svn:https://miscore.googlecode.com/svn/trunk/miscore/</connection>
+        <developerConnection>scm:svn:https://miscore.googlecode.com/svn/trunk/miscore/</developerConnection>
+        <url>https://miscore.googlecode.com/svn/trunk/miscore/</url>
     </scm>
 
     <build>
