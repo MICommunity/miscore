@@ -41,6 +41,27 @@ public class UnNormalizedMiScoreTest {
     }
 
     @Test
+    public void testGetScoreRealValues(){
+        float score = 0.0f;
+
+        ArrayList methodInput = new ArrayList();
+        methodInput.add("MI:0007"); // 3
+        methodInput.add("MI:0007"); // 3
+        // total = 6
+
+        ArrayList typeInput = new ArrayList();
+        typeInput.add("MI:0407"); // 3
+        typeInput.add("MI:0407"); // 3
+        // total = 6
+
+        UnNormalizedMIScore tS = new UnNormalizedMIScore();
+        tS.setMethodScore(methodInput);
+        tS.setTypeScore(typeInput);
+        score = tS.getScore();
+        Assert.assertTrue( score == 12f );
+    }
+
+    @Test
     public void testGetScoreUsingLocalOntology(){
         float score = 0.0f;
 
