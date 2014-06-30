@@ -84,7 +84,7 @@ public class TestTypeScore {
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float result = tS.getOntologyScore("MI:0403");
-        Assert.assertEquals(0.33f, result);
+        Assert.assertTrue(0.33f == result);
     }
     @Test
     public void testGetOntologyScoreMappingUndefinedKey(){
