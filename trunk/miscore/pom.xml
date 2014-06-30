@@ -7,9 +7,9 @@
     <name>Molecular Interactions Score</name>
 
     <scm>
-        <connection>scm:svn:https://enfin-core.googlecode.com/svn/tags/miscore-1.3.5</connection>
-        <developerConnection>scm:svn:https://enfin-core.googlecode.com/svn/tags/miscore-1.3.5</developerConnection>
-        <url>http://code.google.com/p/enfin-core/source/browse/tags/miscore-1.3.5</url>
+        <connection>scm:svn:https://enfin-core.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://enfin-core.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://code.google.com/p/enfin-core/source/browse/trunk/</url>
     </scm>
 
     <build>
