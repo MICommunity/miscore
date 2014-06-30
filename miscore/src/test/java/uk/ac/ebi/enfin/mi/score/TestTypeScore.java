@@ -114,9 +114,10 @@ public class TestTypeScore {
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float result1 = tS.getOntologyScore("MI:0208");
+        Assert.assertTrue(result1 == 0.1f);
         tS.setNewOntologyScore("MI:0208", 0.7f);
         Float result2 = tS.getOntologyScore("MI:0208");
-        Assert.assertEquals(result1, result2);
+        Assert.assertTrue(result2 == 0.7f);
     }
 
     @Test
