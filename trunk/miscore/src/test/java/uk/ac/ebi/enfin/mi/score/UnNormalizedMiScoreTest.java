@@ -37,7 +37,7 @@ public class UnNormalizedMiScoreTest {
         tS.setTypeScore(typeInput);
         tS.setPublicationScore( 4 );
         score = tS.getScore();
-        Assert.assertEquals( score, 16.39f );
+        Assert.assertTrue( score == 16.4f );
     }
 
     @Test
@@ -82,7 +82,7 @@ public class UnNormalizedMiScoreTest {
         tS.setTypeScore(typeInput);
         tS.setPublicationScore( 4 );
         score = tS.getScore();
-        Assert.assertEquals( score, 14.39f );
+        Assert.assertTrue( score == 14.4f );
     }
 
     @Test
