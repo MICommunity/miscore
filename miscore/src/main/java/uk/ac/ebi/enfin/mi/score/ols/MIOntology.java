@@ -65,7 +65,7 @@ public class MIOntology {
      */
     private Map<String,String> getJsonChildrenFromOLS(String parentTerm){
         mapIdName = new HashMap<String,String>();
-        String jsonQuery = "http://www.ebi.ac.uk/ontology-lookup/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
+        String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
         String jsonText = "";
         try {
             URL url = new URL(jsonQuery);
