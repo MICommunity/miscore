@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class MIOntology {
     static Logger logger = Logger.getLogger(MIOntology.class);
-    private Map<String,String> mapIdName;
+    private Map<String, String> mapIdName;
     private final String psimiJson = "psimiOntology.json";
     private String psimiJsonContent;
     boolean useOLS;
@@ -44,7 +44,7 @@ public class MIOntology {
             StringBuilder content = new StringBuilder();
             String line;
             try {
-                while((line = br.readLine()) != null){
+                while ((line = br.readLine()) != null) {
                     content.append(line);
                 }
                 br.close();
@@ -60,24 +60,27 @@ public class MIOntology {
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id from OLS.
+     *
      * @param parentTerm
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String,String> getJsonChildrenFromOLS(String parentTerm){
-        mapIdName = new HashMap<String,String>();
-        String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
+    private Map<String, String> getJsonChildrenFromOLS(String parentTerm) {
+        mapIdName = new HashMap<String, String>();
+        //  String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
+        String formattedParentTerm = parentTerm.replaceAll(":", "_");
+        String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants?size=1000";
         String jsonText = "";
         try {
             URL url = new URL(jsonQuery);
             URLConnection olsConnection = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(olsConnection.getInputStream()));
             String inputLine;
-            while ((inputLine = in.readLine()) != null){
+            while ((inputLine = in.readLine()) != null) {
                 jsonText += inputLine;
-                in.close();
-                break;
+                /*in.close();
+                break;*/
             }
-            if(jsonText.length() > 0){
+            if (jsonText.length() > 0) {
                 JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
                 return getMapIdNameFromJsonObject(jsonObject);
             }
@@ -90,6 +93,27 @@ public class MIOntology {
     }
 
 
+    /**
+     * Get all the children terms in the MI ontology for one specific MI ontology
+     * term id from OLS.
+     *
+     * @param jsonObject
+     * @return a map "ontology term id":"ontology term name"
+     */
+    private Map<String, String> getMapIdNameFromJsonObject(JSONObject jsonObject) {
+        mapIdName = new HashMap<String, String>();
+        if (jsonObject != null) {
+            try {
+                JSONObject embedded = jsonObject.getJSONObject("_embedded");
+                JSONArray termChildren = embedded.getJSONArray("terms");
+                //mapIdName.put(termId,termName); // Include the parentTerm
+                getMapIdNameFromJsonArray(termChildren);
+            } catch (JSONException e) {
+                logger.info("wrong Ontology term ID or no children for this parent term");
+            }
+        }
+        return mapIdName;
+    }
 
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
@@ -97,13 +121,14 @@ public class MIOntology {
      * @param jsonObject
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String,String> getMapIdNameFromJsonObject(JSONObject jsonObject){
+    private Map<String,String> getMapIdNameFromJsonObjectFromFile(JSONObject jsonObject){
         mapIdName = new HashMap<String,String>();
         if(jsonObject != null){
             try{
                 JSONArray termChildren = jsonObject.getJSONArray("children");
                 //mapIdName.put(termId,termName); // Include the parentTerm
-                getMapIdNameFromJsonArray(termChildren);
+                //use getMapIdNameFromJsonArray when the file is of same json format as of new ols
+                getMapIdNameFromJsonArrayFromFile(termChildren);
             } catch (JSONException e){
                 logger.info("wrong Ontology term ID or no children for this parent term");
             }
@@ -114,17 +139,18 @@ public class MIOntology {
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id from file.
+     *
      * @param parentTerm
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String,String> getJsonChildrenFromFile(String parentTerm){
+    private Map<String, String> getJsonChildrenFromFile(String parentTerm) {
         String json = "";
         InputStream is = getPsimiJsonContent();
         json = getStringFromInputStream(is);
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);
         //jsonObject.get("children").toString();
         JSONObject jsonResults = findOntologyTerm(jsonObject, parentTerm);
-        if(jsonResults == null){
+        if (jsonResults == null) {
             jsonResults = new JSONObject();
             jsonResults.put(parentTerm, "unknown");
         }
@@ -133,37 +159,39 @@ public class MIOntology {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return getMapIdNameFromJsonObject(jsonObject);
+        //use getMapIdNameFromJsonObject when the file is of same json format as of new ols
+        return getMapIdNameFromJsonObjectFromFile(jsonObject);
     }
 
     /**
      * Find ontology term recursive method
+     *
      * @param jsonObject
      * @param ontologyTerm
      * @return
      */
-    private JSONObject findOntologyTerm(JSONObject jsonObject,String ontologyTerm){
+    private JSONObject findOntologyTerm(JSONObject jsonObject, String ontologyTerm) {
         String id = jsonObject.getString("id");
-        if(id.equalsIgnoreCase(ontologyTerm)){
+        if (id.equalsIgnoreCase(ontologyTerm)) {
             return jsonObject;
         } else {
-            try{
+            try {
                 JSONArray termChildren = jsonObject.getJSONArray("children");
-                for(Object child:termChildren){
+                for (Object child : termChildren) {
                     JSONObject jsonChild = (JSONObject) JSONSerializer.toJSON(child);
                     id = jsonChild.getString("id");
-                    if(id.equalsIgnoreCase(ontologyTerm)){
+                    if (id.equalsIgnoreCase(ontologyTerm)) {
                         return jsonChild;
                     }
                 }
-                for(Object child:termChildren){
+                for (Object child : termChildren) {
                     JSONObject jsonChild = (JSONObject) JSONSerializer.toJSON(child);
-                    JSONObject jsonChildObject = findOntologyTerm(jsonChild,ontologyTerm);
-                    if(jsonChildObject != null){
+                    JSONObject jsonChildObject = findOntologyTerm(jsonChild, ontologyTerm);
+                    if (jsonChildObject != null) {
                         return jsonChildObject;
                     }
                 }
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 //no children
             }
         }
@@ -174,11 +202,12 @@ public class MIOntology {
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id.
+     *
      * @param parentTerm
      * @return a map "ontology term id":"ontology term name"
      */
-    public Map<String,String> getJsonChildren(String parentTerm){
-        if(useOLS){
+    public Map<String, String> getJsonChildren(String parentTerm) {
+        if (useOLS) {
             return getJsonChildrenFromOLS(parentTerm);
         } else {
             return getJsonChildrenFromFile(parentTerm);
@@ -188,9 +217,34 @@ public class MIOntology {
     /**
      * Recursive method to get children terms from children terms in a
      * flat key value map with term ids and term names.
+     *
      * @param termChildren
      */
-    private void getMapIdNameFromJsonArray(JSONArray termChildren){
+    private void getMapIdNameFromJsonArray(JSONArray termChildren) {
+
+
+        for (int i = 0; i < termChildren.size(); ++i) {
+            JSONObject child = termChildren.getJSONObject(i);
+            String termId = child.getString("obo_id");
+            String termName = child.getString("label");
+            mapIdName.put(termId, termName);
+            /*try{
+                JSONArray nextTermChildren = child.getJSONArray("children");
+                if(nextTermChildren.size() > 0){
+                    getMapIdNameFromJsonArray(nextTermChildren);
+                }
+            } catch (JSONException e){
+                //logger.debug("No children for " + termId);
+            }*/
+        }
+    }
+
+    /**
+     * Recursive method to get children terms from children terms in a
+     * flat key value map with term ids and term names.
+     * @param termChildren
+     */
+    private void getMapIdNameFromJsonArrayFromFile(JSONArray termChildren){
 
 
         for (int i = 0; i < termChildren.size(); ++i) {
@@ -212,54 +266,55 @@ public class MIOntology {
     /**
      * Get all the children terms in the MI ontology for more than one MI ontology
      * term id.
+     *
      * @param termsToQuery Parent ontology terms
      * @return a map "queried ontology term id":"children terms". The children
      * terms are represented in a map "ontology term id":"ontology term name".
      */
-    public Map<String,Map<String,String>> getMapOfTerms(ArrayList<String> termsToQuery){
-        Map<String,Map<String,String>> mapOfTerms = new HashMap<String,Map<String,String>>();
-        for(String term:termsToQuery){
+    public Map<String, Map<String, String>> getMapOfTerms(ArrayList<String> termsToQuery) {
+        Map<String, Map<String, String>> mapOfTerms = new HashMap<String, Map<String, String>>();
+        for (String term : termsToQuery) {
             /* Add children */
-            Map<String,String> children = getJsonChildren(term);
+            Map<String, String> children = getJsonChildren(term);
             mapOfTerms.put(term, children);
         }
         return mapOfTerms;
     }
 
 
-
     /**
      * convert InputStream to String
+     *
      * @param is
      * @return
      */
-	private static String getStringFromInputStream(InputStream is) {
+    private static String getStringFromInputStream(InputStream is) {
 
-		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
 
-		String line;
-		try {
+        String line;
+        try {
 
-			br = new BufferedReader(new InputStreamReader(is));
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
-		return sb.toString();
+        return sb.toString();
 
-	}
+    }
 
 }
