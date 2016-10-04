@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.ebi.enfin.mi.score</groupId>
     <artifactId>miscore</artifactId>
-    <version>1.3.12-SNAPSHOT</version>
+    <version>1.3.11</version>
     <name>Molecular Interactions Score</name>
 
     <scm>
