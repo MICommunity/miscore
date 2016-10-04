@@ -75,6 +75,7 @@
                     </flowInitContext>
                     <!--Need to allow snapshot because of primefaces-->
                     <allowSnapshots>true</allowSnapshots>
+                    <allowUntracked>true</allowUntracked>
                     <!--<noDeploy>true</noDeploy>-->
                 </configuration>
             </plugin>
