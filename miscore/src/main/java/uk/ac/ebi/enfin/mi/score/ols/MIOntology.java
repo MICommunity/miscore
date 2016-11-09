@@ -119,6 +119,8 @@ public class MIOntology {
                 getMapIdNameFromJsonArrayObject(termChildren);
             } catch (JSONException e) {
                 logger.info("wrong Ontology term ID or no children for this parent term");
+            }catch(Exception e){
+                logger.info("wrong Ontology term ID or no children for this parent term");
             }
         }
         return mapIdName;
