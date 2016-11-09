@@ -1,5 +1,8 @@
 package uk.ac.ebi.enfin.mi.score.ols;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -75,14 +78,20 @@ public class MIOntology {
             URLConnection olsConnection = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(olsConnection.getInputStream()));
             String inputLine;
+            StringBuilder builder = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
-                jsonText += inputLine;
+                //jsonText += inputLine;
+                builder.append(inputLine);
                 /*in.close();
                 break;*/
             }
+            jsonText = builder.toString();
             if (jsonText.length() > 0) {
-                JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
-                return getMapIdNameFromJsonObject(jsonObject);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(jsonText);
+
+                //  JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
+                return getMapIdNameFromJsonObject(jsonNode);
             }
         } catch (MalformedURLException e) {
             logger.error(e.getMessage());
@@ -97,17 +106,17 @@ public class MIOntology {
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id from OLS.
      *
-     * @param jsonObject
+     * @param jsonNode
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String, String> getMapIdNameFromJsonObject(JSONObject jsonObject) {
+    private Map<String, String> getMapIdNameFromJsonObject(JsonNode jsonNode) {
         mapIdName = new HashMap<String, String>();
-        if (jsonObject != null) {
+        if (jsonNode != null) {
             try {
-                JSONObject embedded = jsonObject.getJSONObject("_embedded");
-                JSONArray termChildren = embedded.getJSONArray("terms");
+                JsonNode embedded = jsonNode.get("_embedded");
+                JsonNode termChildren = embedded.get("terms");
                 //mapIdName.put(termId,termName); // Include the parentTerm
-                getMapIdNameFromJsonArray(termChildren);
+                getMapIdNameFromJsonArrayObject(termChildren);
             } catch (JSONException e) {
                 logger.info("wrong Ontology term ID or no children for this parent term");
             }
@@ -118,18 +127,19 @@ public class MIOntology {
     /**
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id from OLS.
+     *
      * @param jsonObject
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String,String> getMapIdNameFromJsonObjectFromFile(JSONObject jsonObject){
-        mapIdName = new HashMap<String,String>();
-        if(jsonObject != null){
-            try{
+    private Map<String, String> getMapIdNameFromJsonObjectFromFile(JSONObject jsonObject) {
+        mapIdName = new HashMap<String, String>();
+        if (jsonObject != null) {
+            try {
                 JSONArray termChildren = jsonObject.getJSONArray("children");
                 //mapIdName.put(termId,termName); // Include the parentTerm
                 //use getMapIdNameFromJsonArray when the file is of same json format as of new ols
                 getMapIdNameFromJsonArrayFromFile(termChildren);
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 logger.info("wrong Ontology term ID or no children for this parent term");
             }
         }
@@ -225,9 +235,35 @@ public class MIOntology {
 
         for (int i = 0; i < termChildren.size(); ++i) {
             JSONObject child = termChildren.getJSONObject(i);
-            String termId = child.getString("obo_id");
-            String termName = child.getString("label");
+            String termId = child.getString("id");
+            String termName = child.getString("name");
             mapIdName.put(termId, termName);
+            try {
+                JSONArray nextTermChildren = child.getJSONArray("children");
+                if (nextTermChildren.size() > 0) {
+                    getMapIdNameFromJsonArray(nextTermChildren);
+                }
+            } catch (JSONException e) {
+                //logger.debug("No children for " + termId);
+            }
+        }
+    }
+
+    /**
+     * Recursive method to get children terms from children terms in a
+     * flat key value map with term ids and term names.
+     *
+     * @param termChildren
+     */
+    private void getMapIdNameFromJsonArrayObject(JsonNode termChildren) {
+
+
+        for (final JsonNode objNode : termChildren) {
+            String termId = objNode.get("obo_id").textValue();
+            String termName = objNode.get("label").textValue();
+            mapIdName.put(termId, termName);
+        }
+
             /*try{
                 JSONArray nextTermChildren = child.getJSONArray("children");
                 if(nextTermChildren.size() > 0){
@@ -236,28 +272,29 @@ public class MIOntology {
             } catch (JSONException e){
                 //logger.debug("No children for " + termId);
             }*/
-        }
+
     }
 
     /**
      * Recursive method to get children terms from children terms in a
      * flat key value map with term ids and term names.
+     *
      * @param termChildren
      */
-    private void getMapIdNameFromJsonArrayFromFile(JSONArray termChildren){
+    private void getMapIdNameFromJsonArrayFromFile(JSONArray termChildren) {
 
 
         for (int i = 0; i < termChildren.size(); ++i) {
             JSONObject child = termChildren.getJSONObject(i);
             String termId = child.getString("id");
             String termName = child.getString("name");
-            mapIdName.put(termId,termName);
-            try{
+            mapIdName.put(termId, termName);
+            try {
                 JSONArray nextTermChildren = child.getJSONArray("children");
-                if(nextTermChildren.size() > 0){
+                if (nextTermChildren.size() > 0) {
                     getMapIdNameFromJsonArray(nextTermChildren);
                 }
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 //logger.debug("No children for " + termId);
             }
         }
