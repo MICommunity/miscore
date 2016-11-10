@@ -2,7 +2,6 @@ package uk.ac.ebi.enfin.mi.score.ols;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -70,8 +69,47 @@ public class MIOntology {
     private Map<String, String> getJsonChildrenFromOLS(String parentTerm) {
         mapIdName = new HashMap<String, String>();
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
-        String formattedParentTerm = parentTerm.replaceAll(":", "_");
-        String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants?size=1000";
+        // String formattedParentTerm = parentTerm.replaceAll(":", "_");
+        //  String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants";
+        String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms?obo_id=" + parentTerm;
+        String jsonText = "";
+        String descendantUrl = "";
+        try {
+            jsonText = getJsonForUrl(jsonQuery);// mainQry
+            if (jsonText.length() > 0) {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(jsonText);
+                descendantUrl = calculateDescendantUrl(jsonNode);
+                //  JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
+                if (descendantUrl != null && !descendantUrl.trim().equals("")) {
+
+                    String descendantQuery = descendantUrl + "?size=1000";
+                    String descendantJson = getJsonForUrl(descendantQuery);
+
+                    if (descendantJson.length() > 0) {
+                        ObjectMapper descendantMapper = new ObjectMapper();
+                        JsonNode descendantJsonNode = mapper.readTree(descendantJson);
+                        return getMapIdNameFromJsonObject(descendantJsonNode);
+                    }
+
+                }
+
+            }
+        } catch (MalformedURLException e) {
+            logger.error(e.getMessage());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+        return mapIdName;
+    }
+
+    /**
+     * Gets Json text from the given query url
+     *
+     * @param jsonQuery
+     * @return
+     */
+    public String getJsonForUrl(String jsonQuery) {
         String jsonText = "";
         try {
             URL url = new URL(jsonQuery);
@@ -86,19 +124,13 @@ public class MIOntology {
                 break;*/
             }
             jsonText = builder.toString();
-            if (jsonText.length() > 0) {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode jsonNode = mapper.readTree(jsonText);
-
-                //  JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
-                return getMapIdNameFromJsonObject(jsonNode);
-            }
         } catch (MalformedURLException e) {
             logger.error(e.getMessage());
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        return mapIdName;
+
+        return jsonText;
     }
 
 
@@ -117,13 +149,37 @@ public class MIOntology {
                 JsonNode termChildren = embedded.get("terms");
                 //mapIdName.put(termId,termName); // Include the parentTerm
                 getMapIdNameFromJsonArrayObject(termChildren);
-            } catch (JSONException e) {
-                logger.info("wrong Ontology term ID or no children for this parent term");
-            }catch(Exception e){
+            } catch (Exception e) {
                 logger.info("wrong Ontology term ID or no children for this parent term");
             }
         }
         return mapIdName;
+    }
+
+    /**
+     * Finds Descendants Url from given json node.
+     *
+     * @param jsonNode
+     * @return
+     */
+    private String calculateDescendantUrl(JsonNode jsonNode) {
+        String descendentUrl = null;
+        if (jsonNode != null) {
+            try {
+                JsonNode embedded = jsonNode.get("_embedded");
+                JsonNode termChildren = embedded.get("terms");
+                //mapIdName.put(termId,termName); // Include the parentTerm
+                for (final JsonNode objNode : termChildren) {
+                    descendentUrl = objNode.get("_links").get("descendants").get("href").textValue();
+                    break;
+
+                }
+
+            } catch (Exception e) {
+                logger.info("Descendant Url not found");
+            }
+        }
+        return descendentUrl;
     }
 
     /**
