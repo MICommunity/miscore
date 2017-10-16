@@ -71,7 +71,7 @@ public class MIOntology {
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
         // String formattedParentTerm = parentTerm.replaceAll(":", "_");
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants";
-        String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms?obo_id=" + parentTerm;
+        String jsonQuery = "https://www.ebi.ac.uk/ols/api/ontologies/mi/terms?obo_id=" + parentTerm;
         String jsonText = "";
         String descendantUrl = "";
         try {
