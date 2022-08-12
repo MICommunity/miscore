@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.ac.ebi.enfin.mi.score.scores.MethodScore;
 import uk.ac.ebi.enfin.mi.score.scores.TypeScore;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,7 +23,7 @@ public class TestMethodScoreExamples {
         float p = (float)Math.pow(10,Rpl);
         Rval = Rval * p;
         float tmp = Math.round(Rval);
-        return (float)tmp/p;
+        return tmp /p;
     }
     /**
      * An interaction annotated with two “biophysical”, three “biochemical” methods
@@ -30,7 +31,7 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample01(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0013");
         input.add("MI:0013");
         input.add("MI:0401");
@@ -39,7 +40,7 @@ public class TestMethodScoreExamples {
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.81")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.81f));
     }
 
     /**
@@ -48,7 +49,7 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample02(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0013");
         input.add("MI:0013");
         input.add("MI:0090");
@@ -57,7 +58,7 @@ public class TestMethodScoreExamples {
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.76")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.76f));
     }
 
 
@@ -67,7 +68,7 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample03(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0090");
         input.add("MI:0090");
         input.add("MI:0428");
@@ -75,7 +76,7 @@ public class TestMethodScoreExamples {
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.60")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.60f));
     }
 
 
@@ -85,7 +86,7 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample04(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0254");
         input.add("MI:0254");
         input.add("MI:0255");
@@ -93,7 +94,7 @@ public class TestMethodScoreExamples {
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.31")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.31f));
     }
 
     /**
@@ -102,13 +103,13 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample05(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0254");
         input.add("MI:0255");
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.12")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.12f));
     }
 
     /**
@@ -116,12 +117,12 @@ public class TestMethodScoreExamples {
      */
     @Test
     public void testExample06(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("unknown");
         MethodScore mS = new MethodScore(input);
         Float score = mS.getScore();
         Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.03")) == 0);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.03f));
     }
 
 

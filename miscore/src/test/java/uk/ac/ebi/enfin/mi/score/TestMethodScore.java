@@ -2,6 +2,7 @@ package uk.ac.ebi.enfin.mi.score;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
@@ -21,7 +22,7 @@ import org.junit.Test;
 public class TestMethodScore {
     @Test
     public void testGetScore(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0051");
         input.add("MI:0042");
         input.add("MI:0013");
@@ -36,15 +37,15 @@ public class TestMethodScore {
 
     @Test
     public void testTwoMethodQueriesOneOntologyQuery(){
-        ArrayList input1 = new ArrayList();
+        List<String> input1 = new ArrayList<>();
         input1.add("MI:0051");
         input1.add("MI:0042");
         input1.add("MI:0090");
 
-        ArrayList input2 = new ArrayList();
+        List<String> input2 = new ArrayList<>();
         input2.add("MI:0013");
 
-        ArrayList<String> parentTerms = new ArrayList<String>();
+        List<String> parentTerms = new ArrayList<>();
         parentTerms.add("MI:0013");
         parentTerms.add("MI:0090");
         parentTerms.add("MI:0254");
@@ -69,7 +70,7 @@ public class TestMethodScore {
 
     @Test
     public void testQueryUnknownOntologyTerms(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0059");
         MethodScore tS = new MethodScore(input);
         Float score = tS.getScore();

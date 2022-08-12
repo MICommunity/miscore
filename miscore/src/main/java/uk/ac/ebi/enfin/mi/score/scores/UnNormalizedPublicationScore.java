@@ -11,7 +11,7 @@ import uk.ac.ebi.enfin.mi.score.ConfidenceScore;
  * @since <pre>29/03/11</pre>
  */
 
-public class UnNormalizedPublicationScore extends ConfidenceScore{
+public class UnNormalizedPublicationScore extends ConfidenceScore {
 
     private static final Logger logger = Logger.getLogger(UnNormalizedPublicationScore.class);
     private Integer numberOfPublications = 0;
@@ -21,8 +21,8 @@ public class UnNormalizedPublicationScore extends ConfidenceScore{
     }
 
     @Override
-    protected boolean isValidScore(Float score){
-        if(score >= 0){
+    protected boolean isValidScore(Float score) {
+        if (score >= 0) {
             return true;
         }
         return false;

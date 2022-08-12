@@ -1,6 +1,7 @@
 import uk.ac.ebi.enfin.mi.score.scores.MIScore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This example show how to use MIscore to obtain confidence scores for
@@ -25,7 +26,7 @@ public class MIScoreClient {
            * If the same method has been reported for one interaction more than once
            * in different publication, then the method should be included in MIscore as many times
            *  as it appears in different publications. */
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051");
         methodInput.add("MI:0051");
         methodInput.add("MI:0042");
@@ -36,7 +37,7 @@ public class MIScoreClient {
            * If the same type has been reported for one interaction more than once
            *  in different publication, then the type should be included in MIscore as many times
            *  as it appears in different publications. */
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208");
         typeInput.add("MI:0403");
         typeInput.add("MI:0407");

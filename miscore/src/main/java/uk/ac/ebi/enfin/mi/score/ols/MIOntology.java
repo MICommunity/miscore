@@ -12,8 +12,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -67,7 +67,7 @@ public class MIOntology {
      * @return a map "ontology term id":"ontology term name"
      */
     private Map<String, String> getJsonChildrenFromOLS(String parentTerm) {
-        mapIdName = new HashMap<String, String>();
+        mapIdName = new HashMap<>();
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/v2/json/termchildren?termId="+parentTerm+"&ontology=MI&depth=1000";
         // String formattedParentTerm = parentTerm.replaceAll(":", "_");
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants";
@@ -95,8 +95,6 @@ public class MIOntology {
                 }
 
             }
-        } catch (MalformedURLException e) {
-            logger.error(e.getMessage());
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
@@ -106,8 +104,8 @@ public class MIOntology {
     /**
      * Gets Json text from the given query url
      *
-     * @param jsonQuery
-     * @return
+     * @param jsonQuery URL to fetch the json from
+     * @return Json string
      */
     public String getJsonForUrl(String jsonQuery) {
         String jsonText = "";
@@ -190,13 +188,13 @@ public class MIOntology {
      * @return a map "ontology term id":"ontology term name"
      */
     private Map<String, String> getMapIdNameFromJsonObjectFromFile(JSONObject jsonObject) {
-        mapIdName = new HashMap<String, String>();
+        mapIdName = new HashMap<>();
         if (jsonObject != null) {
             try {
                 JSONArray termChildren = jsonObject.getJSONArray("children");
                 //mapIdName.put(termId,termName); // Include the parentTerm
                 //use getMapIdNameFromJsonArray when the file is of same json format as of new ols
-                getMapIdNameFromJsonArrayFromFile(termChildren);
+                getMapIdNameFromJsonArray(termChildren);
             } catch (JSONException e) {
                 logger.info("wrong Ontology term ID or no children for this parent term");
             }
@@ -228,7 +226,7 @@ public class MIOntology {
             e.printStackTrace();
         }
         //use getMapIdNameFromJsonObject when the file is of same json format as of new ols
-        return getMapIdNameFromJsonObjectFromFile(jsonObject);
+        return getMapIdNameFromJsonObjectFromFile(jsonResults);
     }
 
     /**
@@ -271,7 +269,7 @@ public class MIOntology {
      * Get all the children terms in the MI ontology for one specific MI ontology
      * term id.
      *
-     * @param parentTerm
+     * @param parentTerm Parent term to fetch the children of
      * @return a map "ontology term id":"ontology term name"
      */
     public Map<String, String> getJsonChildren(String parentTerm) {
@@ -322,40 +320,6 @@ public class MIOntology {
             mapIdName.put(termId, termName);
         }
 
-            /*try{
-                JSONArray nextTermChildren = child.getJSONArray("children");
-                if(nextTermChildren.size() > 0){
-                    getMapIdNameFromJsonArray(nextTermChildren);
-                }
-            } catch (JSONException e){
-                //logger.debug("No children for " + termId);
-            }*/
-
-    }
-
-    /**
-     * Recursive method to get children terms from children terms in a
-     * flat key value map with term ids and term names.
-     *
-     * @param termChildren
-     */
-    private void getMapIdNameFromJsonArrayFromFile(JSONArray termChildren) {
-
-
-        for (int i = 0; i < termChildren.size(); ++i) {
-            JSONObject child = termChildren.getJSONObject(i);
-            String termId = child.getString("id");
-            String termName = child.getString("name");
-            mapIdName.put(termId, termName);
-            try {
-                JSONArray nextTermChildren = child.getJSONArray("children");
-                if (nextTermChildren.size() > 0) {
-                    getMapIdNameFromJsonArray(nextTermChildren);
-                }
-            } catch (JSONException e) {
-                //logger.debug("No children for " + termId);
-            }
-        }
     }
 
     /**
@@ -366,8 +330,8 @@ public class MIOntology {
      * @return a map "queried ontology term id":"children terms". The children
      * terms are represented in a map "ontology term id":"ontology term name".
      */
-    public Map<String, Map<String, String>> getMapOfTerms(ArrayList<String> termsToQuery) {
-        Map<String, Map<String, String>> mapOfTerms = new HashMap<String, Map<String, String>>();
+    public Map<String, Map<String, String>> getMapOfTerms(List<String> termsToQuery) {
+        Map<String, Map<String, String>> mapOfTerms = new HashMap<>();
         for (String term : termsToQuery) {
             /* Add children */
             Map<String, String> children = getJsonChildren(term);
