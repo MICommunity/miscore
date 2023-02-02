@@ -46,3 +46,4 @@ fabric.properties
 ._.DS_Store
 
 miscore/logs/
+target/
