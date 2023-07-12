@@ -31,15 +31,6 @@
             </plugin>
         </plugins>
     </build>
-    
-    <repositories>
-            <!-- EBI repositories -->
-        <repository>
-            <id>ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- MI Score dependency -->

@@ -5,7 +5,7 @@
     <groupId>uk.ac.ebi.enfin.mi.score</groupId>
     <artifactId>miscore-parent</artifactId>
     <version>1.4.0</version>
-    <name>Molecular Interaction Score Parent</name>
+    <name>MI :: Score Parent</name>
     <packaging>pom</packaging>
 
     <modules>
@@ -33,6 +33,10 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
         <repository>
             <id>nexus-ebi-repo-old</id>
             <url>https://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>

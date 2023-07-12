@@ -2,10 +2,8 @@ package uk.ac.ebi.enfin.mi.score.ols;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -187,17 +185,13 @@ public class MIOntology {
      * @param jsonObject
      * @return a map "ontology term id":"ontology term name"
      */
-    private Map<String, String> getMapIdNameFromJsonObjectFromFile(JSONObject jsonObject) {
+    private Map<String, String> getMapIdNameFromJsonObjectFromFile(JsonNode jsonObject) {
         mapIdName = new HashMap<>();
         if (jsonObject != null) {
-            try {
-                JSONArray termChildren = jsonObject.getJSONArray("children");
-                //mapIdName.put(termId,termName); // Include the parentTerm
-                //use getMapIdNameFromJsonArray when the file is of same json format as of new ols
-                getMapIdNameFromJsonArray(termChildren);
-            } catch (JSONException e) {
-                logger.info("wrong Ontology term ID or no children for this parent term");
-            }
+            ArrayNode termChildren = (ArrayNode) jsonObject.get("children");
+            //mapIdName.put(termId,termName); // Include the parentTerm
+            //use getMapIdNameFromJsonArray when the file is of same json format as of new ols
+            getMapIdNameFromJsonArray(termChildren);
         }
         return mapIdName;
     }
@@ -210,23 +204,16 @@ public class MIOntology {
      * @return a map "ontology term id":"ontology term name"
      */
     private Map<String, String> getJsonChildrenFromFile(String parentTerm) {
-        String json = "";
         InputStream is = getPsimiJsonContent();
-        json = getStringFromInputStream(is);
-        JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(json);
-        //jsonObject.get("children").toString();
-        JSONObject jsonResults = findOntologyTerm(jsonObject, parentTerm);
-        if (jsonResults == null) {
-            jsonResults = new JSONObject();
-            jsonResults.put(parentTerm, "unknown");
-        }
+        JsonNode node = NullNode.getInstance();
         try {
+            node = new ObjectMapper().readTree(is);
             is.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         //use getMapIdNameFromJsonObject when the file is of same json format as of new ols
-        return getMapIdNameFromJsonObjectFromFile(jsonResults);
+        return getMapIdNameFromJsonObjectFromFile(node);
     }
 
     /**
@@ -236,29 +223,24 @@ public class MIOntology {
      * @param ontologyTerm
      * @return
      */
-    private JSONObject findOntologyTerm(JSONObject jsonObject, String ontologyTerm) {
-        String id = jsonObject.getString("id");
+    private JsonNode findOntologyTerm(JsonNode jsonObject, String ontologyTerm) {
+        String id = jsonObject.get("id").textValue();
         if (id.equalsIgnoreCase(ontologyTerm)) {
             return jsonObject;
         } else {
-            try {
-                JSONArray termChildren = jsonObject.getJSONArray("children");
-                for (Object child : termChildren) {
-                    JSONObject jsonChild = (JSONObject) JSONSerializer.toJSON(child);
-                    id = jsonChild.getString("id");
-                    if (id.equalsIgnoreCase(ontologyTerm)) {
-                        return jsonChild;
-                    }
+            ArrayNode termChildren = (ArrayNode) jsonObject.get("children");
+            for (JsonNode child : termChildren) {
+                id = child.get("id").textValue();
+                if (id.equalsIgnoreCase(ontologyTerm)) {
+                    return child;
                 }
-                for (Object child : termChildren) {
-                    JSONObject jsonChild = (JSONObject) JSONSerializer.toJSON(child);
-                    JSONObject jsonChildObject = findOntologyTerm(jsonChild, ontologyTerm);
-                    if (jsonChildObject != null) {
-                        return jsonChildObject;
-                    }
+            }
+            for (JsonNode child : termChildren) {
+                JsonNode jsonChildObject = findOntologyTerm(child, ontologyTerm);
+                if (jsonChildObject != null) {
+                    return jsonChildObject;
                 }
-            } catch (JSONException e) {
-                //no children
+
             }
         }
         return null;
@@ -286,21 +268,18 @@ public class MIOntology {
      *
      * @param termChildren
      */
-    private void getMapIdNameFromJsonArray(JSONArray termChildren) {
+    private void getMapIdNameFromJsonArray(ArrayNode termChildren) {
 
 
         for (int i = 0; i < termChildren.size(); ++i) {
-            JSONObject child = termChildren.getJSONObject(i);
-            String termId = child.getString("id");
-            String termName = child.getString("name");
+            JsonNode child = termChildren.get(i);
+            String termId = child.get("id").textValue();
+            String termName = child.get("name").textValue();
             mapIdName.put(termId, termName);
-            try {
-                JSONArray nextTermChildren = child.getJSONArray("children");
-                if (nextTermChildren.size() > 0) {
-                    getMapIdNameFromJsonArray(nextTermChildren);
-                }
-            } catch (JSONException e) {
-                //logger.debug("No children for " + termId);
+
+            ArrayNode nextTermChildren = (ArrayNode) child.get("children");
+            if (nextTermChildren != null) {
+                getMapIdNameFromJsonArray(nextTermChildren);
             }
         }
     }
