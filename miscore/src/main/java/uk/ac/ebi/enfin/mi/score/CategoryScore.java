@@ -14,9 +14,9 @@ import java.util.*;
 public abstract class CategoryScore extends ConfidenceScore{
     protected static final Logger logger = Logger.getLogger(CategoryScore.class);
     protected List<String> ontologyTermsQuery;
-    protected Map<String,Float> ontologyScore = new HashMap<String,Float>(); // "parent ontology Id":"score"
-    protected Map<String,Integer> mainCategories = new HashMap<String,Integer>(); // "parent ontology Id":"category Id"
-    protected Map<String,String> mappingParentTerms = new HashMap<String,String>(); // "child ontology Id":"parent ontology Id"
+    protected Map<String,Float> ontologyScore = new HashMap<>(); // "parent ontology Id":"score"
+    protected Map<String,Integer> mainCategories = new HashMap<>(); // "parent ontology Id":"category Id"
+    protected Map<String,String> mappingParentTerms = new HashMap<>(); // "child ontology Id":"parent ontology Id"
     private static final String categoryScorePropertiesFile = "scoreCategories.properties";
     protected Properties categoryScores;
 
@@ -25,7 +25,7 @@ public abstract class CategoryScore extends ConfidenceScore{
      * @param listOfOntologyTerms List of ontology terms used
      * to describe one property of one interaction
      */
-    public CategoryScore(ArrayList<String> listOfOntologyTerms) {
+    public CategoryScore(List<String> listOfOntologyTerms) {
         ontologyTermsQuery = listOfOntologyTerms;
         categoryScores = getCategoryScores(categoryScorePropertiesFile);
     }
@@ -153,6 +153,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Take default ontology score mapping
+     * @param ontologyScore Source ontology
      */
     protected void setOntologyScore(Map<String,Float> ontologyScore){
         this.ontologyScore = ontologyScore;
@@ -160,7 +161,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Sets the ontology score mapping using a complete mapping object
-     * @param ontologyScoreMapping
+     * @param ontologyScoreMapping The ontology score mapping to set
      */
     public void setNewOntologyScore(Map<String,Float> ontologyScoreMapping){
         if(ontologyScoreMapping != null){
@@ -172,8 +173,8 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Adds o replaces scores for ontology terms
-     * @param ontologyTerm
-     * @param score
+     * @param ontologyTerm The ontology term id to link to the score
+     * @param score Score to link to ontology term, between 0 and 1
      */
     public void setNewOntologyScore(String ontologyTerm, Float score){
         if(ontologyTerm != null && score != null){
@@ -191,22 +192,20 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Get score for an ontology term
-     * @param ontologyTerm
+     * @param ontologyTerm The ontology term id to find the associated score
      * @return score
      */
     public Float getOntologyScore(String ontologyTerm) {
-        Float score = ontologyScore.get(ontologyTerm);
-        return score;
+        return ontologyScore.get(ontologyTerm);
     }
 
     /**
      * Get parent terms for any ontology term for interaction type
-     * @param ontologyTerm
+     * @param ontologyTerm Ontology term ID of which you fetch the parent
      * @return "parent ontology Id" for a "child ontology Id"
      */
     public String getMappingParentTerms(String ontologyTerm){
-        String parent = mappingParentTerms.get(ontologyTerm);
-        return parent;
+        return mappingParentTerms.get(ontologyTerm);
     }
 
     /**
@@ -219,7 +218,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Set new categories form a list
-     * @param mainCategories
+     * @param mainCategories To be set
      */
     public void setMainCategories(Map<String, Integer> mainCategories) {
         this.mainCategories = mainCategories;
@@ -227,11 +226,11 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Add categories
-     * @param ontologyTerm
-     * @param Score
+     * @param ontologyTerm Ontology term id
+     * @param score score to associate to category ontology
      */
-    public void setMainCategories(String ontologyTerm, Integer Score) {
-        mainCategories.put(ontologyTerm,Score);
+    public void setMainCategories(String ontologyTerm, Integer score) {
+        mainCategories.put(ontologyTerm,score);
     }
 
     /**
@@ -244,7 +243,7 @@ public abstract class CategoryScore extends ConfidenceScore{
 
     /**
      * Get a category for an ontology term
-     * @param ontologyTerm
+     * @param ontologyTerm The ontology term id of which you search the parent category
      * @return category Id for a parent ontology Id
      */
     public Integer getMainCategories(String ontologyTerm) {

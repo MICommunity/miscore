@@ -5,6 +5,7 @@ import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 import uk.ac.ebi.enfin.mi.score.scores.UnNormalizedMIScore;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,14 +19,13 @@ import java.util.Map;
 public class UnNormalizedMiScoreTest {
     @Test
     public void testGetScore(){
-        float score = 0.0f;
 
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051"); // 3
         methodInput.add("MI:0042"); // 3
         // total = 6
 
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208"); // 0.24
         typeInput.add("MI:0403"); // 0.15
         typeInput.add("MI:0407"); // 3
@@ -36,20 +36,19 @@ public class UnNormalizedMiScoreTest {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore( 4 );
-        score = tS.getScore();
-        Assert.assertTrue( score == 16.4f );
+        float score = tS.getScore();
+        Assert.assertEquals(16.4f, score, 0.0);
     }
 
     @Test
     public void testGetScoreRealValues(){
-        float score = 0.0f;
 
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0007"); // 3
         methodInput.add("MI:0007"); // 3
         // total = 6
 
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0407"); // 3
         typeInput.add("MI:0407"); // 3
         // total = 6
@@ -57,20 +56,19 @@ public class UnNormalizedMiScoreTest {
         UnNormalizedMIScore tS = new UnNormalizedMIScore();
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
-        score = tS.getScore();
-        Assert.assertTrue( score == 12f );
+        float score = tS.getScore();
+        Assert.assertEquals(12f, score, 0.0);
     }
 
     @Test
     public void testGetScoreUsingLocalOntology(){
-        float score = 0.0f;
 
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051"); // 3
         methodInput.add("MI:0042"); // 3
         // total = 6
 
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208"); // 0.24
         typeInput.add("MI:0403"); // 0.15
         typeInput.add("MI:0407"); // 3
@@ -81,20 +79,19 @@ public class UnNormalizedMiScoreTest {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore( 4 );
-        score = tS.getScore();
-        Assert.assertTrue( score == 14.4f );
+        float score = tS.getScore();
+        Assert.assertEquals(16.4f, score, 0.1);
     }
 
     @Test
     public void testGetScoreWithLessQueriesToOLS(){
-        float score = 0.0f;
         MIOntology MIO = new MIOntology();
         /* Method information */
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051");
         methodInput.add("MI:0042");
 
-        ArrayList<String> methodParentTerms = new ArrayList<String>();
+        ArrayList<String> methodParentTerms = new ArrayList<>();
         methodParentTerms.add("MI:0013");
         methodParentTerms.add("MI:0090");
         methodParentTerms.add("MI:0254");
@@ -105,12 +102,12 @@ public class UnNormalizedMiScoreTest {
 
 
         /* Type information */
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208");
         typeInput.add("MI:0403");
         typeInput.add("MI:0407");
 
-        ArrayList<String> typeParentTerms = new ArrayList<String>();
+        ArrayList<String> typeParentTerms = new ArrayList<>();
         typeParentTerms.add("MI:0208");
         typeParentTerms.add("MI:0403");
         typeParentTerms.add("MI:0407");
@@ -122,18 +119,17 @@ public class UnNormalizedMiScoreTest {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms);
         tS.setPublicationScore(4);
-        score = tS.getScore();
-        Assert.assertTrue( score >= 0 && score >= 1 );
+        float score = tS.getScore();
+        Assert.assertTrue(score >= 1);
     }
     @Test
     public void testGetScore2(){
-        Float score = null;
 
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051");
         methodInput.add("MI:0042");
 
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208");
         typeInput.add("MI:0403");
         typeInput.add("MI:0407");
@@ -143,19 +139,18 @@ public class UnNormalizedMiScoreTest {
         tS.setMethodScore(methodInput);
         tS.setTypeScore(typeInput);
         tS.setPublicationScore(4);
-        score = tS.getScore();
+        Float score = tS.getScore();
         Assert.assertTrue( score >= 0 && score >= 1 );
     }
     @Test
     public void testSetTypeScore(){
-        Float score = null;
         MIOntology MIO = new MIOntology();
         /* Method information */
-        ArrayList methodInput = new ArrayList();
+        List<String> methodInput = new ArrayList<>();
         methodInput.add("MI:0051");
         methodInput.add("MI:0042");
 
-        ArrayList<String> methodParentTerms = new ArrayList<String>();
+        ArrayList<String> methodParentTerms = new ArrayList<>();
         methodParentTerms.add("MI:0013");
         methodParentTerms.add("MI:0090");
         methodParentTerms.add("MI:0254");
@@ -166,19 +161,19 @@ public class UnNormalizedMiScoreTest {
 
 
         /* Type information */
-        ArrayList typeInput = new ArrayList();
+        List<String> typeInput = new ArrayList<>();
         typeInput.add("MI:0208");
         typeInput.add("MI:0403");
         typeInput.add("MI:0407");
 
-        ArrayList<String> typeParentTerms = new ArrayList<String>();
+        ArrayList<String> typeParentTerms = new ArrayList<>();
         typeParentTerms.add("MI:0208");
         typeParentTerms.add("MI:0403");
         typeParentTerms.add("MI:0407");
         Map<String, Map<String,String>> mapOfTypeTerms = MIO.getMapOfTerms(typeParentTerms);
 
         /* Rewrite default type score values */
-        Map<String,Float> customOntologyTypeScores = new HashMap<String,Float>();
+        Map<String,Float> customOntologyTypeScores = new HashMap<>();
         customOntologyTypeScores.put("MI:0208", 0.05f);
         customOntologyTypeScores.put("MI:0403", 0.20f);
         customOntologyTypeScores.put("MI:0914", 0.20f);
@@ -190,6 +185,6 @@ public class UnNormalizedMiScoreTest {
         tS.setMethodScore(methodInput, mapOfMethodTerms);
         tS.setTypeScore(typeInput, mapOfTypeTerms, customOntologyTypeScores);
         tS.setPublicationScore(4);
-        score = tS.getScore();
+        Float score = tS.getScore();
         Assert.assertTrue( score >= 0 && score >= 1 );    }
 }

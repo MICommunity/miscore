@@ -4,6 +4,7 @@ import uk.ac.ebi.enfin.mi.score.ols.MIOntology;
 import uk.ac.ebi.enfin.mi.score.scores.TypeScore;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -20,7 +21,7 @@ import org.junit.Test;
 public class TestTypeScore {
     @Test
     public void testGetScore(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         input.add("MI:0407");
@@ -30,12 +31,12 @@ public class TestTypeScore {
     }
     @Test
     public void testCustomScores(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         input.add("MI:0407");
         TypeScore tS = new TypeScore(input);
-        Map<String,Float> customOntologyTypeScores = new HashMap<String,Float>();
+        Map<String,Float> customOntologyTypeScores = new HashMap<>();
         customOntologyTypeScores.put("MI:0208", 0.05f);
         customOntologyTypeScores.put("MI:0403", 0.20f);
         customOntologyTypeScores.put("MI:0914", 0.20f);
@@ -48,18 +49,18 @@ public class TestTypeScore {
     }
     @Test
     public void testTwoTypesQueriesOneOntologyQuery(){
-        ArrayList input1 = new ArrayList();
+        List<String> input1 = new ArrayList<>();
         input1.add("MI:0208");
         input1.add("MI:0403");
         input1.add("MI:0407");
 
-        ArrayList input2 = new ArrayList();
+        List<String> input2 = new ArrayList<>();
         input2.add("MI:0208");
         input2.add("MI:0403");
         input2.add("MI:0407");
         input2.add("MI:0915");
 
-        ArrayList<String> parentTerms = new ArrayList<String>();
+        ArrayList<String> parentTerms = new ArrayList<>();
         parentTerms.add("MI:0208");
         parentTerms.add("MI:0403");
         parentTerms.add("MI:0407");
@@ -79,7 +80,7 @@ public class TestTypeScore {
     }
     @Test
     public void testGetOntologyScoreMappingKey(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
@@ -88,7 +89,7 @@ public class TestTypeScore {
     }
     @Test
     public void testGetOntologyScoreMappingUndefinedKey(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
@@ -98,7 +99,7 @@ public class TestTypeScore {
     }
     @Test
     public void testGetOntologyScoreMapping(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
@@ -109,20 +110,20 @@ public class TestTypeScore {
 
     @Test
     public void testCompareDefaultOntologyMapping(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float result1 = tS.getOntologyScore("MI:0208");
-        Assert.assertTrue(result1 == 0.1f);
+        Assert.assertEquals(0.1f, result1, 0.1);
         tS.setNewOntologyScore("MI:0208", 0.7f);
         Float result2 = tS.getOntologyScore("MI:0208");
-        Assert.assertTrue(result2 == 0.7f);
+        Assert.assertEquals(0.7f, result2, 0.1);
     }
 
     @Test
     public void testQueryUnknownOntologyTerms(){
-        ArrayList input = new ArrayList();
+        List<String> input = new ArrayList<>();
         input.add("MI:0059");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();

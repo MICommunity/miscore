@@ -1,8 +1,11 @@
 package uk.ac.ebi.enfin.mi.score;
+
 import org.junit.Assert;
 import org.junit.Test;
 import uk.ac.ebi.enfin.mi.score.scores.TypeScore;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,28 +18,29 @@ import java.util.ArrayList;
  */
 public class TestTypeScoreExamples {
     /**
-     *  Round numbers
+     * Round numbers
      */
     private static float Round(float Rval, int Rpl) {
-        float p = (float)Math.pow(10,Rpl);
+        float p = (float) Math.pow(10, Rpl);
         Rval = Rval * p;
         float tmp = Math.round(Rval);
-        return (float)tmp/p;
+        return tmp / p;
     }
+
     /**
      * An interaction annotated with three “direct interaction” types
      * 0.82
      */
     @Test
-    public void testExample01(){
-        ArrayList input = new ArrayList();
+    public void testExample01() {
+        List<String> input = new ArrayList<>();
         input.add("MI:0407");
         input.add("MI:0407");
         input.add("MI:0407");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.82")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.82f));
     }
 
     /**
@@ -44,16 +48,16 @@ public class TestTypeScoreExamples {
      * 0.77
      */
     @Test
-    public void testExample02(){
-        ArrayList input = new ArrayList();
+    public void testExample02() {
+        List<String> input = new ArrayList<>();
         input.add("MI:0407");
         input.add("MI:0914");
         input.add("MI:0915");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.77")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.77f));
     }
 
 
@@ -62,14 +66,14 @@ public class TestTypeScoreExamples {
      * 0.56
      */
     @Test
-    public void testExample03(){
-        ArrayList input = new ArrayList();
+    public void testExample03() {
+        List<String> input = new ArrayList<>();
         input.add("MI:0915");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.56")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.56f));
     }
 
 
@@ -78,15 +82,15 @@ public class TestTypeScoreExamples {
      * 0.39
      */
     @Test
-    public void testExample04(){
-        ArrayList input = new ArrayList();
+    public void testExample04() {
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0208");
         input.add("MI:0403");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.39")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.39f));
     }
 
     /**
@@ -94,15 +98,15 @@ public class TestTypeScoreExamples {
      * 0.26
      */
     @Test
-    public void testExample05(){
-        ArrayList input = new ArrayList();
+    public void testExample05() {
+        List<String> input = new ArrayList<>();
         input.add("MI:0208");
         input.add("MI:0208");
         input.add("MI:0208");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.26")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.26f));
     }
 
     /**
@@ -110,15 +114,14 @@ public class TestTypeScoreExamples {
      * 0.05
      */
     @Test
-    public void testExample06(){
-        ArrayList input = new ArrayList();
+    public void testExample06() {
+        List<String> input = new ArrayList<>();
         input.add("unknown");
         TypeScore tS = new TypeScore(input);
         Float score = tS.getScore();
-        Float scoreRounded = Round( score, 2 );
-        Assert.assertTrue(scoreRounded.compareTo(new Float("0.05")) == 0);
+        Float scoreRounded = Round(score, 2);
+        Assert.assertEquals(0, scoreRounded.compareTo(0.05f));
     }
-
 
 
 }

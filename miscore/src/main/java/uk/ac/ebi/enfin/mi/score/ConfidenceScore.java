@@ -15,8 +15,8 @@ public abstract class ConfidenceScore {
 
     /**
      * Calculates logarithm
-     * @param base
-     * @param num
+     * @param base The dividend of log: log<sub>base</sub> = ln(num) / ln (base)
+     * @param num The quotient of log: log<sub>base</sub> = ln(num) / ln (base)
      * @return logarithm value
      */
     protected Float logOfBase(Float base, Float num) {
@@ -26,7 +26,7 @@ public abstract class ConfidenceScore {
 
     /**
      * Checks the result is a normalized value [0-1]
-     * @param score
+     * @param score Score to check
      * @return true or false
      */
     protected boolean isValidScore(Float score){
@@ -34,5 +34,10 @@ public abstract class ConfidenceScore {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return getScore().toString();
     }
 }

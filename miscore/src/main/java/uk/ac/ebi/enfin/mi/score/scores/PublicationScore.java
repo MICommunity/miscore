@@ -25,8 +25,8 @@ public class PublicationScore extends ConfidenceScore{
      * @return  score
      */
     public Float getScore() {
-        Float a = 0.0f;
-        Float b = 0.0f;
+        float a = 0.0f;
+        float b = 0.0f;
         Float score = 0.0f;
         if(numberOfPublications > publicationNumberWithHighestScore){
             score = 1.0f;
