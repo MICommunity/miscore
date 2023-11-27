@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class LocalJSONGenerator {
     private static final Logger logger = Logger.getLogger(UnNormalizedPublicationScore.class);
-    private static final OLSClient client = new OLSClient(new OLSWsConfig());
+    private static final OLSClient client = new OLSClient(new OLSWsConfig("www.ebi.ac.uk/ols4/"));
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) {

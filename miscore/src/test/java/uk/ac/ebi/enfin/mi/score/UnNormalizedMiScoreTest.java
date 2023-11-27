@@ -80,7 +80,7 @@ public class UnNormalizedMiScoreTest {
         tS.setTypeScore(typeInput);
         tS.setPublicationScore( 4 );
         float score = tS.getScore();
-        Assert.assertEquals(16.4f, score, 0.1);
+        Assert.assertEquals(10.7f, score, 0.1);
     }
 
     @Test
