@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -70,28 +69,23 @@ public class MIOntology {
         // String formattedParentTerm = parentTerm.replaceAll(":", "_");
         //  String jsonQuery = "http://www.ebi.ac.uk/ols/api/ontologies/mi/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252F" + formattedParentTerm + "/descendants";
         String jsonQuery = "https://www.ebi.ac.uk/ols4/api/ontologies/mi/terms?obo_id=" + parentTerm;
-        String jsonText = "";
         String descendantUrl = "";
         try {
-            jsonText = getJsonForUrl(jsonQuery);// mainQry
-            if (jsonText.length() > 0) {
+            BufferedReader jsonReader = getJsonForUrl(jsonQuery);// mainQry
+            if (jsonReader != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                JsonNode jsonNode = mapper.readTree(jsonText);
+                JsonNode jsonNode = mapper.readTree(jsonReader);
                 descendantUrl = calculateDescendantUrl(jsonNode);
                 //  JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(jsonText);
-                if (descendantUrl != null && !descendantUrl.trim().equals("")) {
-
+                if (descendantUrl != null && !descendantUrl.trim().isEmpty()) {
                     String descendantQuery = descendantUrl + "?size=1000";
-                    String descendantJson = getJsonForUrl(descendantQuery);
+                    BufferedReader descendantJson = getJsonForUrl(descendantQuery);
 
-                    if (descendantJson.length() > 0) {
-                        ObjectMapper descendantMapper = new ObjectMapper();
+                    if (descendantJson != null) {
                         JsonNode descendantJsonNode = mapper.readTree(descendantJson);
                         return getMapIdNameFromJsonObject(descendantJsonNode);
                     }
-
                 }
-
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
@@ -100,33 +94,21 @@ public class MIOntology {
     }
 
     /**
-     * Gets Json text from the given query url
+     * Gets Json reader from the given query url
      *
      * @param jsonQuery URL to fetch the json from
-     * @return Json string
+     * @return Json reader
      */
-    public String getJsonForUrl(String jsonQuery) {
-        String jsonText = "";
+    public BufferedReader getJsonForUrl(String jsonQuery) {
         try {
             URL url = new URL(jsonQuery);
             URLConnection olsConnection = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(olsConnection.getInputStream()));
-            String inputLine;
-            StringBuilder builder = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                //jsonText += inputLine;
-                builder.append(inputLine);
-                /*in.close();
-                break;*/
-            }
-            jsonText = builder.toString();
-        } catch (MalformedURLException e) {
-            logger.error(e.getMessage());
-        } catch (IOException e) {
+            return new BufferedReader(new InputStreamReader(olsConnection.getInputStream()));
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
 
-        return jsonText;
+        return null;
     }
 
 
